@@ -11,7 +11,14 @@ import (
 )
 
 func ConnectDB() *mongo.Client {
-	client, err := mongo.NewClient(options.Client().ApplyURI(EnvMongoURI()))
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI(EnvMongoURI()))
+	if err != nil {
+		log.Fatal(err)
+	}
+	/*client, err := mongo.NewClient(options.Client().ApplyURI(EnvMongoURI()))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -20,7 +27,7 @@ func ConnectDB() *mongo.Client {
 	err = client.Connect(ctx)
 	if err != nil {
 		log.Fatal(err)
-	}
+	}*/
 
 	// ping the database
 	err = client.Ping(ctx, nil)
