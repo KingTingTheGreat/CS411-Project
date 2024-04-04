@@ -69,5 +69,7 @@ func main() {
 		return nil
 	})
 
+	e.GET("/resorts", controllers.GetResorts)
+
 	e.Logger.Fatal(e.Start(":6969"))
 }

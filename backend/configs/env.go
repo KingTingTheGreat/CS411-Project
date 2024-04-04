@@ -33,3 +33,21 @@ func EnvGoogleClientSecret() string {
 
 	return os.Getenv("GOOGLE_CLIENT_SECRET")
 }
+
+func EnvRapidAPIKey() string {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	return os.Getenv("X_RAPIDAPI_KEY")
+}
+
+func EnvRapidAPIHost() string {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	return os.Getenv("X_RAPIDAPI_HOST")
+}
