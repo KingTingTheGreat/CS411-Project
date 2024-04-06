@@ -33,6 +33,7 @@ func main() {
 	)
 
 	e := echo.New()
+	e.Use(middleware.Logger())
 
 	// run database
 	configs.ConnectDB()
