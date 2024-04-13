@@ -2,6 +2,7 @@ package clients
 
 import (
 	"backend/configs"
+	"fmt"
 	"io"
 	"net/http"
 )
@@ -18,8 +19,13 @@ func NewSkiResortClient() *SkiResortClient {
 	}
 }
 
-func (client *SkiResortClient) GetResorts() (string, error) {
-	req, _ := http.NewRequest("GET", "https://ski-resorts-and-conditions.p.rapidapi.com/v1/resort", nil)
+func (client *SkiResortClient) GetResorts(page int) (string, error) {
+	url := fmt.Sprintf("https://ski-resorts-and-conditions.p.rapidapi.com/v1/resort?page=%d", page)
+
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return "", err
+	}
 
 	req.Header.Add("X-RapidAPI-Key", client.APIKey)
 	req.Header.Add("X-RapidAPI-Host", client.Host)
@@ -28,9 +34,12 @@ func (client *SkiResortClient) GetResorts() (string, error) {
 	if err != nil {
 		return "", err
 	}
-
 	defer res.Body.Close()
-	body, _ := io.ReadAll(res.Body)
+
+	body, err := io.ReadAll(res.Body)
+	if err != nil {
+		return "", err
+	}
 
 	return string(body), nil
 }

@@ -31,48 +31,52 @@ func GetResorts(c echo.Context) error {
 	radiusQuery := c.QueryParam("radius")
 
 	var err error
-	var longitude, radius float64
+	var latitude, longitude, radius float64
 
 	log.Println("Received parameters:", latQuery, lngQuery, radiusQuery) // Logging input parameters
 
-	latitude, err := strconv.ParseFloat(latQuery, 64)
+	latitude, err = strconv.ParseFloat(latQuery, 64)
 	if err != nil {
 		log.Println("Error converting latitude:", err)
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid latitude"})
 	}
 
-	longitude, err = strconv.ParseFloat(lngQuery, 64) // Use = as err is already declared
+	longitude, err = strconv.ParseFloat(lngQuery, 64)
 	if err != nil {
 		log.Println("Error converting longitude:", err)
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid longitude"})
 	}
 
-	radius, err = strconv.ParseFloat(radiusQuery, 64) // Use = as err is already declared
+	radius, err = strconv.ParseFloat(radiusQuery, 64)
 	if err != nil {
 		log.Println("Error converting radius:", err)
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Invalid radius"})
 	}
 
 	client := clients.NewSkiResortClient()
-	jsonResponse, err := client.GetResorts() // err is declared first time with :=
-	if err != nil {
-		log.Println("Error fetching resorts:", err)
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to fetch resorts"})
+	var allResorts []Resort
+
+	// Loop through all pages
+	for page := 1; page <= 6; page++ {
+		jsonResponse, err := client.GetResorts(page) // Make sure the client method can accept a page parameter
+		if err != nil {
+			log.Println("Error fetching resorts for page", page, ":", err)
+			continue // Optionally handle this error more gracefully
+		}
+
+		var pageResult struct {
+			Data []Resort `json:"data"`
+		}
+		err = json.Unmarshal([]byte(jsonResponse), &pageResult)
+		if err != nil {
+			log.Println("Error unmarshalling JSON for page", page, ":", err)
+			continue // Optionally handle this error more gracefully
+		}
+
+		allResorts = append(allResorts, pageResult.Data...)
 	}
 
-	var result struct {
-		Data []Resort `json:"data"` // Assuming the data array is under a 'data' key
-	}
-
-	err = json.Unmarshal([]byte(jsonResponse), &result) // Use = as err is already declared
-	if err != nil {
-		log.Println("Error unmarshalling JSON:", err)
-		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Error parsing resorts data"})
-	}
-
-	log.Println("Parsed Resorts:", result.Data)
-
-	filteredResorts := filterResortsByDistance(result.Data, latitude, longitude, radius)
+	filteredResorts := filterResortsByDistance(allResorts, latitude, longitude, radius)
 
 	log.Println("Filtered Resorts:", filteredResorts)
 
