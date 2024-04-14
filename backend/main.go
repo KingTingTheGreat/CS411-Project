@@ -4,6 +4,7 @@ import (
 	"backend/configs"
 	"backend/controllers"
 	"context"
+	"net/http"
 
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo/v4"
@@ -11,6 +12,8 @@ import (
 	"github.com/markbates/goth"
 	"github.com/markbates/goth/gothic"
 	"github.com/markbates/goth/providers/google"
+
+	"backend/clients"
 )
 
 type ProviderContextKey struct{}
@@ -72,5 +75,23 @@ func main() {
 
 	e.GET("/resorts", controllers.GetResorts)
 
+	e.GET("/getCoordinates", getCoordinatesHandler)
+
 	e.Logger.Fatal(e.Start(":6969"))
+}
+
+func getCoordinatesHandler(c echo.Context) error {
+	address := c.QueryParam("address")
+	if address == "" {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": "Address is required"})
+	}
+
+	client := clients.NewGoogleMapsClient()
+	lat, lng, err := client.GetCoordinates(address)
+	if err != nil {
+		// Handle error appropriately
+		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "Failed to get coordinates"})
+	}
+
+	return c.JSON(http.StatusOK, map[string]float64{"latitude": lat, "longitude": lng})
 }

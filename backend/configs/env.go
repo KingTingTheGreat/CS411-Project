@@ -51,3 +51,12 @@ func EnvRapidAPIHost() string {
 
 	return os.Getenv("X_RAPIDAPI_HOST")
 }
+
+func EnvGoogleMapsAPIKey() string {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	return os.Getenv("GOOGLE_MAPS_API_KEY")
+}
