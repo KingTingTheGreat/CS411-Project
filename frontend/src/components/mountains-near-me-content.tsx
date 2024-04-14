@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './styles/styles.css';
 
 // Define a TypeScript interface for mountain data
 interface Mountain {
@@ -8,6 +9,7 @@ interface Mountain {
 }
 
 const MountainsNearMeContent: React.FC = () => {
+  const [loading, setLoading] = useState(false);
   const [address, setAddress] = useState<string>('');
   const [radius, setRadius] = useState<number>(50); // Default radius in miles
   const [mountains, setMountains] = useState<Mountain[]>([]);
@@ -21,14 +23,17 @@ const MountainsNearMeContent: React.FC = () => {
   };
 
   const fetchMountains = (lat: number, lng: number) => {
+    setLoading(true);
     fetch(`http://localhost:6969/resorts?lat=${lat}&lng=${lng}&radius=${radius}`)
   .then(response => response.json())
   .then(data => {
     if (data && Array.isArray(data)) {
       console.log("Mountains data received:", data);
       setMountains(data);
+      setLoading(false);
     } else {
-      setMountains([]); // Ensure it's always an array
+      setMountains([]);
+      setLoading(false);
     }
   })
   .catch(error => {
@@ -50,7 +55,7 @@ const MountainsNearMeContent: React.FC = () => {
 
   return (
     <div>
-      <h1>Mountains Near Me</h1>
+      <h1>Search for a mountain below:</h1>
       <input
         type="text"
         value={address}
@@ -58,14 +63,16 @@ const MountainsNearMeContent: React.FC = () => {
         placeholder="Enter your address"
         style={{ color: 'black' }} // Ensure text is visible
       />
-      <select value={radius} onChange={handleRadiusChange}>
-        <option value="50">50 miles</option>
-        <option value="100">100 miles</option>
-        <option value="200">200 miles</option>
-        <option value="300">300 miles</option>
+      <select value={radius} onChange={handleRadiusChange} style={{ color: 'black' }}>
+        <option value="50">50 kilometers</option>
+        <option value="100">100 kilometers</option>
+        <option value="200">200 kilometers</option>
+        <option value="300">300 kilometers</option>
       </select>
       <button onClick={searchMountains}>Search</button>
-      {mountains.length > 0 ? (
+      {loading ? (
+        <div className="loader"></div>
+      ) : mountains.length > 0 ? (
         <ul>
           {mountains.map((mountain) => (
             <li key={mountain.id}>{mountain.name}</li>
@@ -76,6 +83,6 @@ const MountainsNearMeContent: React.FC = () => {
       )}
     </div>
   );
-};
+      }
 
 export default MountainsNearMeContent;
