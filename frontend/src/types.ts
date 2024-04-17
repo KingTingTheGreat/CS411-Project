@@ -1,8 +1,8 @@
 export type User = {
-	Id: string;
-	Username: string;
-	Email: string;
-	FirstName: string;
-	LastName: string;
-	FavoriteMountains: string[];
+	id: string;
+	username: string;
+	email: string;
+	firstname: string;
+	lastname: string;
+	favorites: string[];
 };
