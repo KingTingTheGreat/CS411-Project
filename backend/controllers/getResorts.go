@@ -7,6 +7,7 @@ import (
 	"math"
 	"net/http"
 	"strconv"
+	"sync"
 
 	"github.com/labstack/echo/v4"
 )
@@ -80,8 +81,110 @@ func GetResorts(c echo.Context) error {
 
 	log.Println("Filtered Resorts:", filteredResorts)
 
+	// New slice to hold enriched resort data
+	var enrichedResorts []EnrichedResort
+
+	// Using a WaitGroup to synchronize the goroutines
+	var wg sync.WaitGroup
+
+	for _, resort := range filteredResorts {
+		// Increment the WaitGroup counter
+		wg.Add(1)
+		go func(r Resort) {
+			defer wg.Done() // Decrement the counter when the goroutine completes
+
+			detailsJSON, err := client.GetResortDetails(r.Slug)
+			if err != nil {
+				log.Println("Error fetching details for resort", r.Slug, ":", err)
+				return
+			}
+
+			log.Println("Full expanded:", detailsJSON)
+
+			// Parse the details
+			var details ResortDetails
+			err = json.Unmarshal([]byte(detailsJSON), &details)
+			if err != nil {
+				log.Println("Error unmarshalling details for resort", r.Slug, ":", err)
+				return
+			}
+
+			totalLifts := details.Lifts.Stats.Open + details.Lifts.Stats.Hold + details.Lifts.Stats.Scheduled + details.Lifts.Stats.Closed
+
+			// Assuming ResortDetails has the fields you need, like OpenLifts and TotalLifts
+			enriched := EnrichedResort{
+				Resort:      resort,
+				Href:        details.Href,
+				LiftsStatus: details.Lifts.Status,
+				LiftsStats:  details.Lifts.Stats,
+				Conditions:  details.Conditions,
+			}
+
+			enriched.LiftsStats.Total = totalLifts
+			// Safely add the detailed data to the slice
+			mutex.Lock()
+			enrichedResorts = append(enrichedResorts, enriched)
+			mutex.Unlock()
+
+		}(resort)
+	}
+
+	// Wait for all goroutines to finish
+	wg.Wait()
+
+	log.Println("Enriched Resorts:", enrichedResorts)
+
 	return c.JSON(http.StatusOK, filteredResorts)
 }
+
+type ResortDetails struct {
+	Href       string     `json:"href"`
+	Units      string     `json:"units"`
+	Lifts      Lifts      `json:"lifts"`
+	Conditions Conditions `json:"conditions"`
+}
+
+type Lifts struct {
+	Status Status `json:"status"`
+	Stats  Stats  `json:"stats"`
+}
+
+type Status map[string]string
+
+type Stats struct {
+	Open       int        `json:"open"`
+	Hold       int        `json:"hold"`
+	Scheduled  int        `json:"scheduled"`
+	Closed     int        `json:"closed"`
+	Percentage Percentage `json:"percentage"`
+	Total      int
+}
+
+type Percentage struct {
+	Open      float64 `json:"open"`
+	Hold      float64 `json:"hold"`
+	Scheduled float64 `json:"scheduled"`
+	Closed    float64 `json:"closed"`
+}
+
+type Conditions struct {
+	Base            int `json:"base"`
+	Season          int `json:"season"`
+	TwelveHours     int `json:"twelve_hours"`
+	TwentyFourHours int `json:"twentyfour_hours"`
+	FortyEightHours int `json:"fortyeight_hours"`
+	SevenDays       int `json:"seven_days"`
+}
+
+type EnrichedResort struct {
+	Resort
+	Href        string     `json:"href"`
+	LiftsStatus Status     `json:"liftsStatus"`
+	LiftsStats  Stats      `json:"liftsStats"`
+	Conditions  Conditions `json:"conditions"`
+}
+
+var mutex = &sync.Mutex{}
 
 func filterResortsByDistance(resorts []Resort, lat, lng, radius float64) []Resort {
 	var result []Resort

@@ -13,16 +13,17 @@ const AccountContent = () => {
 	const user: User = data.data.user;
 
 	console.log(user);
+	console.log(user.favorites)
 
 	return (
 		<div>
 			<h1>Account</h1>
-			<p>Username: {user.Username}</p>
-			<p>Email: {user.Email}</p>
-			<p>First Name: {user.FirstName}</p>
-			<p>Last Name: {user.LastName}</p>
+			<p>Username: {user.username}</p>
+			<p>Email: {user.email}</p>
+			<p>First Name: {user.firstname}</p>
+			<p>Last Name: {user.lastname}</p>
 			<div>
-				{user.FavoriteMountains.map((mountain) => (
+				{user.favorites.map((mountain) => (
 					<div key={mountain}>
 						<p>{mountain}</p>
 						{/* <p>{mountain.height}</p>

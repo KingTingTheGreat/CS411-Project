@@ -36,6 +36,7 @@ func main() {
 	)
 
 	e := echo.New()
+	e.Use(middleware.Logger())
 
 	// run database
 	configs.ConnectDB()
@@ -47,7 +48,7 @@ func main() {
 	}))
 
 	e.GET("/", controllers.Home)
-	e.GET("/user/:id", controllers.GetUser)
+	e.GET("/user/:email", controllers.GetUser)
 
 	e.GET("/auth/:provider/callback", func(c echo.Context) error {
 		_, err := gothic.CompleteUserAuth(c.Response(), c.Request())
