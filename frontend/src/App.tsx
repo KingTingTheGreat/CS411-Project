@@ -14,7 +14,7 @@ function Root() {
   return (
     <>
       <Header />
-      <main className="m-0 flex flex-col items-center min-w-full min-h-full">
+      <main className="m-0 flex flex-col items-center min-w-screen min-h-screen">
         <Routes>
           <Route path="/" element={<HomeContent />} />
           <Route path="/about" element={<AboutContent />} />
