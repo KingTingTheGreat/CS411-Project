@@ -22,10 +22,7 @@ const AccountContent = () => {
   return (
     <div>
       <h1>Account</h1>
-      <p>Username: {user.username}</p>
       <p>Email: {user.email}</p>
-      <p>First Name: {user.firstname}</p>
-      <p>Last Name: {user.lastname}</p>
       <div>
         {user.favorites.map((mountain) => (
           <div key={mountain}>
