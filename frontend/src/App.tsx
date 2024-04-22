@@ -2,6 +2,8 @@ import Header from "./components/header.tsx";
 import HomeContent from "./components/home-content.tsx";
 import AboutContent from "./components/about-content.tsx";
 import MountainsNearMeContent from "./components/mountains-near-me-content.tsx";
+import SuccessContent from "./components/success-content.tsx";
+import Profile from "./components/profile.tsx";
 import {
   createBrowserRouter,
   Route,
@@ -22,7 +24,8 @@ function Root() {
             path="/mountains-near-me"
             element={<MountainsNearMeContent />}
           />
-          <Route path="/success" element={<div>Success!</div>} />
+          <Route path="/success/:token" element={<SuccessContent />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/account/:id" element={<AccountContent />} />
         </Routes>
       </main>

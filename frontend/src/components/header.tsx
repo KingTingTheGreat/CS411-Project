@@ -25,6 +25,7 @@ const Header = () => {
         <NavLinkWrapper to="/mountains-near-me">
           Mountains Near Me
         </NavLinkWrapper>
+        <NavLinkWrapper to="/profile">Profile</NavLinkWrapper>
       </div>
     </header>
   );
