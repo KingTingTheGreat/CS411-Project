@@ -13,14 +13,9 @@ const GetProfile = () => {
       }).then((res) => res.json())
   );
 
-  console.log("GetProfile error: ", error);
-  if (error) return false;
-  if (!data) return false;
+  if (error || !data || !data.data || !data.data.user) return false;
 
-  console.log("logging data form /profile");
-  console.log(data);
-
-  return data;
+  return data.data.user;
 };
 
 export default GetProfile;

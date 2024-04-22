@@ -13,7 +13,6 @@ const ValidateToken = () => {
     }).then((res) => res.json())
   );
 
-  console.log(data);
   if (!token || token == "" || error || (data && data.error)) return false;
 
   if (data && data.message == "Success") return true;

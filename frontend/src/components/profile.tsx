@@ -2,7 +2,6 @@ import GetProfile from "../hooks/getProfile";
 
 const Profile = () => {
   const profile = GetProfile();
-  console.log(profile);
   if (!profile)
     return (
       <div>
@@ -14,7 +13,7 @@ const Profile = () => {
 
   return (
     <div>
-      <h1>Profile</h1>
+      <h1>Profile: {profile.email}</h1>
       <div>you are logged in</div>
     </div>
   );
