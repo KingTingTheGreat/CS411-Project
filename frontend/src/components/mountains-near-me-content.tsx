@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import './styles/styles.css';
-import MountainCard from './mountain-card';
 
 // Define a TypeScript interface for mountain data
 interface Mountain {
@@ -13,7 +12,7 @@ interface Mountain {
 
 const MountainsNearMeContent: React.FC = () => {
   const [loading, setLoading] = useState(false);
-  const [address, setAddress] = useState<string>('');
+  const [address, setAddress] = useState<string>("");
   const [radius, setRadius] = useState<number>(50); // Default radius in miles
   const [mountains, setMountains] = useState<Mountain[]>([]);
 
@@ -27,32 +26,38 @@ const MountainsNearMeContent: React.FC = () => {
 
   const fetchMountains = (lat: number, lng: number) => {
     setLoading(true);
-    fetch(`http://localhost:6969/resorts?lat=${lat}&lng=${lng}&radius=${radius}`)
-  .then(response => response.json())
-  .then(data => {
-    if (data && Array.isArray(data)) {
-      console.log("Mountains data received:", data);
-      setMountains(data);
-      setLoading(false);
-    } else {
-      setMountains([]);
-      setLoading(false);
-    }
-  })
-  .catch(error => {
-    console.error('Error fetching mountains:', error);
-    setMountains([]); // Handle error by setting to empty array
-  });
-}
+    fetch(
+      `http://localhost:6969/resorts?lat=${lat}&lng=${lng}&radius=${radius}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        if (data && Array.isArray(data)) {
+          console.log("Mountains data received:", data);
+          setMountains(data);
+          setLoading(false);
+        } else {
+          setMountains([]);
+          setLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching mountains:", error);
+        setMountains([]); // Handle error by setting to empty array
+      });
+  };
 
   const searchMountains = () => {
-    fetch(`http://localhost:6969/getCoordinates?address=${encodeURIComponent(address)}`)
-      .then(response => response.json())
-      .then(data => {
+    fetch(
+      `http://localhost:6969/getCoordinates?address=${encodeURIComponent(
+        address
+      )}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
         fetchMountains(data.latitude, data.longitude);
       })
-      .catch(error => {
-        console.error('Error fetching coordinates:', error);
+      .catch((error) => {
+        console.error("Error fetching coordinates:", error);
       });
   };
 
@@ -64,9 +69,13 @@ const MountainsNearMeContent: React.FC = () => {
         value={address}
         onChange={handleAddressChange}
         placeholder="Enter your address"
-        style={{ color: 'black' }} // Ensure text is visible
+        style={{ color: "black" }} // Ensure text is visible
       />
-      <select value={radius} onChange={handleRadiusChange} style={{ color: 'black' }}>
+      <select
+        value={radius}
+        onChange={handleRadiusChange}
+        style={{ color: "black" }}
+      >
         <option value="50">50 kilometers</option>
         <option value="100">100 kilometers</option>
         <option value="200">200 kilometers</option>
@@ -87,6 +96,6 @@ const MountainsNearMeContent: React.FC = () => {
       )}
     </div>
   );
-      }
+};
 
 export default MountainsNearMeContent;
