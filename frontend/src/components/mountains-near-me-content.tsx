@@ -1,10 +1,12 @@
-import React, { useState } from "react";
-import "./styles/styles.css";
+import React, { useState } from 'react';
+import './styles/styles.css';
 
 // Define a TypeScript interface for mountain data
 interface Mountain {
   id: number;
   name: string;
+  region: string;
+  country: string;
   //elevation: number; // example property, add more based on your data needs
 }
 
@@ -82,13 +84,14 @@ const MountainsNearMeContent: React.FC = () => {
       <button onClick={searchMountains}>Search</button>
       {loading ? (
         <div className="loader"></div>
-      ) : mountains.length > 0 ? (
-        <ul>
-          {mountains.map((mountain) => (
-            <li key={mountain.id}>{mountain.name}</li>
-          ))}
-        </ul>
       ) : (
+        <div className="mountains-container">
+          {mountains.map((mountain) => (
+            <MountainCard key={mountain.id} mountain={mountain} />
+          ))}
+        </div>
+      )}
+      {!loading && mountains.length === 0 && (
         <p>No mountains found.</p>
       )}
     </div>
