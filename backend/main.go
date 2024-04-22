@@ -1,25 +1,49 @@
 package main
 
 import (
+	"backend/clients"
 	"backend/configs"
 	"backend/controllers"
+	"backend/models"
+	"backend/shared"
 	"context"
+	"fmt"
+	"math/rand"
 	"net/http"
 
+	"github.com/golang-jwt/jwt"
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/markbates/goth"
 	"github.com/markbates/goth/gothic"
 	"github.com/markbates/goth/providers/google"
-
-	"backend/clients"
 )
+
+func generateRandomString(length int) string {
+	charset := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	b := make([]byte, length)
+	for i := range b {
+		b[i] = charset[rand.Intn(len(charset))]
+	}
+	return string(b)
+}
 
 type ProviderContextKey struct{}
 
 func main() {
-	key := "secret-key"
+	jwt_secret := generateRandomString(16)
+
+	generateToken := func() string {
+		// Create a new token object
+		token := jwt.New(jwt.SigningMethodHS256)
+
+		// Sign the token with a secret key
+		tokenString, _ := token.SignedString([]byte(jwt_secret))
+		return tokenString
+	}
+
+	key := generateRandomString(16)
 	maxAge := 86400 * 7 // one week
 	isProd := false
 
@@ -37,6 +61,7 @@ func main() {
 
 	e := echo.New()
 	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
 
 	// run database
 	configs.ConnectDB()
@@ -44,20 +69,32 @@ func main() {
 	// // middleware
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: []string{"http://localhost:6969", "http://localhost:5173"},
-		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
+		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization},
 	}))
 
 	e.GET("/", controllers.Home)
-	e.GET("/user/:email", controllers.GetUser)
 
 	e.GET("/auth/:provider/callback", func(c echo.Context) error {
-		_, err := gothic.CompleteUserAuth(c.Response(), c.Request())
+		req := c.Request()
+
+		// fmt.Println("callback p	rovider: ", provider)
+
+		user, err := gothic.CompleteUserAuth(c.Response(), req)
 		if err != nil {
 			return err
 		}
-		// res := responses.Response{Status: 200, Message: "Sign in success", Data: &echo.Map{}}
-		// return c.JSON(200, res)
-		return c.Redirect(302, "http://localhost:5173/success")
+		if controllers.CreateUser(user.Email) {
+			fmt.Println("Created new user with email: ", user.Email)
+		}
+		fmt.Println("Authenticated user: ", user.Email)
+
+		user_key := generateToken()
+		shared.MyKeyStore.Set(user_key, models.User{Email: user.Email})
+
+		fmt.Println("User key: ", user_key)
+
+		return c.Redirect(302, "http://localhost:5173/success/"+user_key)
+		// return c.JSON(http.StatusOK, map[string]string{"key": user_key})
 	})
 	e.GET("/auth/:provider", func(c echo.Context) error {
 		// set the provider in the context
@@ -72,6 +109,15 @@ func main() {
 		gothic.BeginAuthHandler(c.Response(), c.Request())
 		return nil
 	})
+
+
+	e.GET("/auth/logout", func(c echo.Context) error {
+		gothic.Logout(c.Response(), c.Request())
+		return c.Redirect(302, "http://localhost:5173")
+	})
+
+	e.POST("/validate-token", controllers.ValidateToken)
+	e.POST("/profile", controllers.GetProfile)
 
 	e.GET("/resorts", controllers.GetResorts)
 
