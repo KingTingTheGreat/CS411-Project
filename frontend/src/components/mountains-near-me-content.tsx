@@ -30,6 +30,10 @@ const MountainsNearMeContent: React.FC = () => {
                 country: resort.country,
                 href: resort.href,
                 liftsOpen: resort.lifts.stats.open,
+                units: resort.units,
+                location: resort.location,
+                lifts: resort.lifts,
+                conditions: resort.conditions
             }));
             console.log('Setting mountains:', processedData);
             setMountains(processedData);
@@ -71,7 +75,7 @@ const MountainsNearMeContent: React.FC = () => {
               <option value="200">200 kilometers</option>
               <option value="300">300 kilometers</option>
           </select>
-          <button onClick={searchMountains}>Search</button>
+          <button className="search-button" onClick={searchMountains}>Search</button>
           {loading ? (
               <div className="loader"></div>
           ) : (

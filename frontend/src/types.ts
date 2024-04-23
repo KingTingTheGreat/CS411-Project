@@ -1,10 +1,7 @@
 export type User = {
-	id: string;
-	username: string;
-	email: string;
-	firstname: string;
-	lastname: string;
-	favorites: string[];
+  id: string;
+  email: string;
+  favorites: string[];
 };
 
 export interface ApiResponse {
@@ -62,4 +59,15 @@ export interface Mountain {
     country: string;
     href: string;
     liftsOpen: number;
+    units: string;
+    location: Location;
+    lifts: Lifts;
+    conditions: Conditions;
+}
+
+export interface MountainShort {
+    id: number;
+    name: string;
+    region: string;
+    country: string;
 }
