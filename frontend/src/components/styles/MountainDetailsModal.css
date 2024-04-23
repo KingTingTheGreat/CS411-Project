@@ -20,12 +20,26 @@
     max-height: 90vh;
     overflow-y: auto; /* In case content is too long */
     color: black;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; /* Ensures content is spaced out to the sides */
+    align-items: flex-start;
   }
 
   .modal-title {
     font-size: 24px; /* or any other size you prefer */
     font-weight: bold;
   }
+
+  .modal-left {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.map-container {
+    width: 400px; /* Adjust the size as necessary */
+    height: 400px; /* Adjust the size as necessary */
+}
 
 
   .conditions-toggle,

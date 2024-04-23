@@ -60,7 +60,7 @@ const MountainsNearMeContent: React.FC = () => {
   };
 
   return (
-      <div>
+      <div>  
           <h1>Search for a mountain below:</h1>
           <input
               type="text"
