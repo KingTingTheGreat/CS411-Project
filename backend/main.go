@@ -110,7 +110,6 @@ func main() {
 		return nil
 	})
 
-
 	e.GET("/auth/logout", func(c echo.Context) error {
 		gothic.Logout(c.Response(), c.Request())
 		return c.Redirect(302, "http://localhost:5173")

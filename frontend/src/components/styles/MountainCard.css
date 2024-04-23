@@ -47,5 +47,27 @@
     z-index: 10;
   }
 
+  .weather-info {
+    position: absolute;
+    bottom: 10px; /* Adjust as needed */
+    left: 10px; /* Adjust as needed */
+    display: flex;
+    align-items: center; /* Centers the items vertically */
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background to enhance visibility */
+    padding: 5px 10px; /* Padding around the text and icon */
+    border-radius: 8px; /* Rounded corners for the weather info box */
+  }
+  
+  .weather-info img {
+    width: 30px; /* Size of the weather icon */
+    height: 30px; /* Size of the weather icon */
+    margin-right: 5px; /* Space between the icon and temperature text */
+  }
+  
+  .weather-info span {
+    font-size: 16px; /* Size of the temperature text */
+    font-weight: bold; /* Makes the temperature text bold */
+  }
+
 
   

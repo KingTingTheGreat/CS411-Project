@@ -17,6 +17,7 @@ export interface ResortApiData {
     location: Location;
     lifts: Lifts;
     conditions: Conditions;
+    weather: WeatherForecast;
 }
 
 export interface Location {
@@ -53,6 +54,63 @@ export interface Conditions {
     seven_days: number;
 }
 
+export interface WeatherForecast {
+    location: Location;
+    current: Current;
+    forecast: Forecast;
+}
+
+export interface Location {
+    name: string;
+    region: string;
+    country: string;
+    latitude: number;
+    longitude: number;
+    tzID: string;
+    localtime: string;
+}
+
+export interface Current {
+    lastUpdated: string;
+    tempF: number;
+    isDay: number;
+    condition: Condition;
+    windMph: number;
+    humidity: number;
+    precipIn: number;
+    cloud: number;
+    feelsLikeF: number;
+}
+
+export interface Forecast {
+    forecastDay: ForecastDay[];
+}
+
+export interface ForecastDay {
+    date: string;
+    day: Day;
+}
+
+export interface Day {
+    maxTempF: number;
+    minTempF: number;
+    avgTempF: number;
+    maxWindMph: number;
+    totalPrecipIn: number;
+    totalSnowCm: number;
+    dailyChanceOfRain: number;
+    dailyChanceOfSnow: number;
+    condition: Condition;
+    uv: number;
+}
+
+export interface Condition {
+    text: string;
+    icon: string;
+    code: number;
+}
+
+
 export interface Mountain {
     name: string;
     region: string;
@@ -63,6 +121,7 @@ export interface Mountain {
     location: Location;
     lifts: Lifts;
     conditions: Conditions;
+    weather: WeatherForecast;
 }
 
 export interface MountainShort {
@@ -71,3 +130,5 @@ export interface MountainShort {
     region: string;
     country: string;
 }
+
+

@@ -26,6 +26,12 @@ const MountainCard: React.FC<MountainCardProps> = ({ mountain }) => {
     setIsFavorite(!isFavorite);
   };
 
+  const timeOfDayFolder = mountain.weather.current.isDay ? 'day' : 'night';
+  
+  // Use the code to create the local path
+  const iconCode = mountain.weather.current.condition.code;
+  const localIconPath = `../../weather/64x64/${timeOfDayFolder}/${iconCode}.png`;
+
   return (
     <>
       <div className="mountain-card" onClick={toggleModal}>
@@ -34,6 +40,10 @@ const MountainCard: React.FC<MountainCardProps> = ({ mountain }) => {
         <p className="mountain-lifts" style={{ color: getLiftsOpenColor(mountain.lifts.stats.open) }}>
           {mountain.lifts.stats.open} lifts open
         </p>
+        <div className="weather-info">
+          <img src={localIconPath} alt={mountain.weather.current.condition.text} className="weather-icon" />
+          {/* ... */}
+        </div>
         <svg
           onClick={toggleFavorite}
           className="favorite-star"

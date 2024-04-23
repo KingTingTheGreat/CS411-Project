@@ -60,3 +60,12 @@ func EnvGoogleMapsAPIKey() string {
 
 	return os.Getenv("GOOGLE_MAPS_API_KEY")
 }
+
+func WeatherAPIKey() string {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	return os.Getenv("WEATHER_API_KEY")
+}

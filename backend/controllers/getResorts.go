@@ -100,12 +100,20 @@ func GetResorts(c echo.Context) error {
 				return
 			}
 
+			weatherClient := clients.NewWeatherClient()                                              // Ensure you have this client set up
+			weather, err := weatherClient.FetchWeather(r.Location.Latitude, r.Location.Longitude, 7) // Assuming you want a 7-day forecast
+			if err != nil {
+				log.Println("Error fetching weather for resort", r.Name, ":", err)
+				return
+			}
+
 			enriched := EnrichedResort{
 				Resort:     r,
 				Units:      details.Data.Units,
 				Href:       details.Data.Href,
 				Lifts:      details.Data.Lifts,
 				Conditions: details.Data.Conditions,
+				Weather:    *weather,
 			}
 
 			mutex.Lock()
@@ -171,10 +179,11 @@ type Conditions struct {
 
 type EnrichedResort struct {
 	Resort
-	Units      string     `json:"units"`
-	Href       string     `json:"href"`
-	Lifts      Lifts      `json:"lifts"`
-	Conditions Conditions `json:"conditions"`
+	Units      string                  `json:"units"`
+	Href       string                  `json:"href"`
+	Lifts      Lifts                   `json:"lifts"`
+	Conditions Conditions              `json:"conditions"`
+	Weather    clients.WeatherForecast `json:"weather"`
 }
 
 var mutex = &sync.Mutex{}
