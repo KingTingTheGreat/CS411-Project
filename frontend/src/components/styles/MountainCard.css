@@ -35,6 +35,22 @@
     color: #666;
   }
 
+  .mountain-details {
+    display: none; /* Hide details by default */
+    padding-top: 1em;
+  }
+  
+  .mountain-card.expanded .mountain-details {
+    display: block; /* Show details when expanded */
+  }
+  
+  /* Add specific styles for the number of lifts open */
+  .mountain-lifts {
+    margin-top: 0.5em;
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+
   .favorite-star {
     cursor: pointer;
     position: absolute;
@@ -46,6 +62,5 @@
     stroke-width: 1px; /* Adjust as needed for outline thickness */
     z-index: 10;
   }
-
 
   
