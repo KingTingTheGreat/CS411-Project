@@ -34,7 +34,7 @@ func GetResorts(c echo.Context) error {
 	var err error
 	var latitude, longitude, radius float64
 
-	log.Println("Received parameters:", latQuery, lngQuery, radiusQuery) // Logging input parameters
+	log.Println("Received parameters:", latQuery, lngQuery, radiusQuery)
 
 	latitude, err = strconv.ParseFloat(latQuery, 64)
 	if err != nil {
@@ -57,12 +57,11 @@ func GetResorts(c echo.Context) error {
 	client := clients.NewSkiResortClient()
 	var allResorts []Resort
 
-	// Loop through all pages
 	for page := 1; page <= 6; page++ {
-		jsonResponse, err := client.GetResorts(page) // Make sure the client method can accept a page parameter
+		jsonResponse, err := client.GetResorts(page)
 		if err != nil {
 			log.Println("Error fetching resorts for page", page, ":", err)
-			continue // Optionally handle this error more gracefully
+			continue
 		}
 
 		var pageResult struct {
@@ -71,27 +70,22 @@ func GetResorts(c echo.Context) error {
 		err = json.Unmarshal([]byte(jsonResponse), &pageResult)
 		if err != nil {
 			log.Println("Error unmarshalling JSON for page", page, ":", err)
-			continue // Optionally handle this error more gracefully
+			continue
 		}
 
 		allResorts = append(allResorts, pageResult.Data...)
 	}
 
 	filteredResorts := filterResortsByDistance(allResorts, latitude, longitude, radius)
-
 	log.Println("Filtered Resorts:", filteredResorts)
 
-	// New slice to hold enriched resort data
 	var enrichedResorts []EnrichedResort
-
-	// Using a WaitGroup to synchronize the goroutines
 	var wg sync.WaitGroup
 
 	for _, resort := range filteredResorts {
-		// Increment the WaitGroup counter
 		wg.Add(1)
 		go func(r Resort) {
-			defer wg.Done() // Decrement the counter when the goroutine completes
+			defer wg.Done()
 
 			detailsJSON, err := client.GetResortDetails(r.Slug)
 			if err != nil {
@@ -99,9 +93,6 @@ func GetResorts(c echo.Context) error {
 				return
 			}
 
-			log.Println("Full expanded:", detailsJSON)
-
-			// Parse the details
 			var details ResortDetails
 			err = json.Unmarshal([]byte(detailsJSON), &details)
 			if err != nil {
@@ -109,39 +100,42 @@ func GetResorts(c echo.Context) error {
 				return
 			}
 
-			totalLifts := details.Lifts.Stats.Open + details.Lifts.Stats.Hold + details.Lifts.Stats.Scheduled + details.Lifts.Stats.Closed
-
-			// Assuming ResortDetails has the fields you need, like OpenLifts and TotalLifts
 			enriched := EnrichedResort{
-				Resort:      resort,
-				Href:        details.Href,
-				LiftsStatus: details.Lifts.Status,
-				LiftsStats:  details.Lifts.Stats,
-				Conditions:  details.Conditions,
+				Resort:     r,
+				Units:      details.Data.Units,
+				Href:       details.Data.Href,
+				Lifts:      details.Data.Lifts,
+				Conditions: details.Data.Conditions,
 			}
 
-			enriched.LiftsStats.Total = totalLifts
-			// Safely add the detailed data to the slice
 			mutex.Lock()
 			enrichedResorts = append(enrichedResorts, enriched)
 			mutex.Unlock()
-
 		}(resort)
 	}
 
-	// Wait for all goroutines to finish
 	wg.Wait()
 
-	log.Println("Enriched Resorts:", enrichedResorts)
+	// Marshal the enriched resorts data for logging and response
+	enrichedJson, err := json.Marshal(enrichedResorts)
+	if err != nil {
+		log.Println("Error marshaling enriched resorts:", err)
+		return echo.NewHTTPError(http.StatusInternalServerError, "Failed to marshal resorts data")
+	}
 
-	return c.JSON(http.StatusOK, filteredResorts)
+	log.Printf("Final JSON being sent: %s\n", string(enrichedJson))
+	return c.JSONBlob(http.StatusOK, enrichedJson) // Send the enriched data as JSON
 }
 
-type ResortDetails struct {
+type DetailedResortData struct {
 	Href       string     `json:"href"`
 	Units      string     `json:"units"`
 	Lifts      Lifts      `json:"lifts"`
 	Conditions Conditions `json:"conditions"`
+}
+
+type ResortDetails struct {
+	Data DetailedResortData `json:"data"`
 }
 
 type Lifts struct {
@@ -157,7 +151,6 @@ type Stats struct {
 	Scheduled  int        `json:"scheduled"`
 	Closed     int        `json:"closed"`
 	Percentage Percentage `json:"percentage"`
-	Total      int
 }
 
 type Percentage struct {
@@ -178,10 +171,10 @@ type Conditions struct {
 
 type EnrichedResort struct {
 	Resort
-	Href        string     `json:"href"`
-	LiftsStatus Status     `json:"liftsStatus"`
-	LiftsStats  Stats      `json:"liftsStats"`
-	Conditions  Conditions `json:"conditions"`
+	Units      string     `json:"units"`
+	Href       string     `json:"href"`
+	Lifts      Lifts      `json:"lifts"`
+	Conditions Conditions `json:"conditions"`
 }
 
 var mutex = &sync.Mutex{}
