@@ -12,7 +12,7 @@ const MountainCard: React.FC<MountainCardProps> = ({ mountain }) => {
   // Determine the color of the lifts open indicator
   const getLiftsOpenColor = (liftsOpen: number) => {
     if (liftsOpen < 3) return 'red';
-    if (liftsOpen >= 3 && liftsOpen <= 8) return 'yellow';
+    if (liftsOpen >= 3 && liftsOpen <= 8) return 'orange';
     return 'green';
   };
 

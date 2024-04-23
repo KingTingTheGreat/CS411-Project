@@ -22,7 +22,7 @@ const MountainsNearMeContent: React.FC = () => {
     console.log(`Fetching mountains with lat: ${lat}, lng: ${lng}, radius: ${radius}`);
     fetch(`http://localhost:6969/resorts?lat=${lat}&lng=${lng}&radius=${radius}`)
         .then(response => response.json())
-        .then((resorts: ResortApiData[]) => { // Expecting the response to be a direct array
+        .then((resorts: ResortApiData[]) => {
             console.log('Processed data:', resorts);
             const processedData = resorts.map(resort => ({
                 name: resort.name,
@@ -30,7 +30,6 @@ const MountainsNearMeContent: React.FC = () => {
                 country: resort.country,
                 href: resort.href,
                 liftsOpen: resort.lifts.stats.open,
-                // other fields as needed
             }));
             console.log('Setting mountains:', processedData);
             setMountains(processedData);
@@ -38,7 +37,7 @@ const MountainsNearMeContent: React.FC = () => {
         })
         .catch(error => {
             console.error('Error fetching mountains:', error);
-            setMountains([]); // Handle error by setting to empty array
+            setMountains([]); 
             setLoading(false);
         });
 };
