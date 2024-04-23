@@ -1,17 +1,7 @@
-import React from 'react';
 import './styles/MountainCard.css'; // Assuming you have a separate CSS file for the MountainCard
+import { Mountain } from "../types"
 
-interface MountainCardProps {
-  mountain: {
-    id: number;
-    name: string;
-    region: string;
-    country: string;
-    // ...include other properties as needed
-  };
-}
-
-const MountainCard: React.FC<MountainCardProps> = ({ mountain }) => {
+const MountainCard = ({ mountain }: {mountain : Mountain}) => {
   return (
     <div className="mountain-card">
       <h2 className="mountain-name">{mountain.name}</h2>

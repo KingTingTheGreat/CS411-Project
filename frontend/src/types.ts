@@ -3,3 +3,10 @@ export type User = {
   email: string;
   favorites: string[];
 };
+
+export type Mountain = {
+  id: number;
+  name: string;
+  region: string;
+  country: string;
+}
