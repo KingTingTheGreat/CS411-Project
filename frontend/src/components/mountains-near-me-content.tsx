@@ -30,6 +30,10 @@ const MountainsNearMeContent: React.FC = () => {
                 country: resort.country,
                 href: resort.href,
                 liftsOpen: resort.lifts.stats.open,
+                units: resort.units,
+                location: resort.location,
+                lifts: resort.lifts,
+                conditions: resort.conditions
             }));
             console.log('Setting mountains:', processedData);
             setMountains(processedData);

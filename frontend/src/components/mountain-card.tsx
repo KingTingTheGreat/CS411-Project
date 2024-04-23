@@ -1,40 +1,42 @@
 import React, { useState } from 'react';
 import './styles/MountainCard.css';
-import { Mountain } from '../types';
+import MountainDetailsModal from './mountain-details-modal'; // Make sure this path is correct
+import { Mountain } from '../types'; // Update the path as needed
 
 interface MountainCardProps {
-  mountain: Mountain; // Use the updated Mountain interface
+  mountain: Mountain; // Assuming you've changed this from Mountain to ResortApiData for more detail
 }
 
 const MountainCard: React.FC<MountainCardProps> = ({ mountain }) => {
-  const [expanded, setExpanded] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Determine the color of the lifts open indicator
   const getLiftsOpenColor = (liftsOpen: number) => {
     if (liftsOpen < 3) return 'red';
     if (liftsOpen >= 3 && liftsOpen <= 8) return 'orange';
     return 'green';
   };
 
-  // Toggles the expanded state
-  const toggleExpand = () => {
-    setExpanded(!expanded);
+  // Function to toggle the modal's visibility
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen);
   };
 
   return (
-    <div className="mountain-card" onClick={toggleExpand}>
-      <h2 className="mountain-name">{mountain.name}</h2>
-      <p className="mountain-info">{mountain.name}, {mountain.region}, {mountain.country}</p>
-      <p className="mountain-lifts" style={{ color: getLiftsOpenColor(mountain.liftsOpen) }}>
-        {mountain.liftsOpen} lifts open
-      </p>
-      {expanded && (
-        <div className="mountain-details">
-          {/* Insert additional details here */}
-          <a href={mountain.href} target="_blank" rel="noopener noreferrer">More Info</a>
-        </div>
+    <>
+      <div className="mountain-card" onClick={toggleModal}>
+        <h2 className="mountain-name">{mountain.name}</h2>
+        <p className="mountain-info">{mountain.region}, {mountain.country}</p>
+        <p className="mountain-lifts" style={{ color: getLiftsOpenColor(mountain.lifts.stats.open) }}>
+          {mountain.lifts.stats.open} lifts open
+        </p>
+      </div>
+      {isModalOpen && (
+        <MountainDetailsModal
+          resort={mountain}
+          onClose={toggleModal}
+        />
       )}
-    </div>
+    </>
   );
 };
 

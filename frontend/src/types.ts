@@ -59,6 +59,10 @@ export interface Mountain {
     country: string;
     href: string;
     liftsOpen: number;
+    units: string;
+    location: Location;
+    lifts: Lifts;
+    conditions: Conditions;
 }
 
 export interface MountainShort {

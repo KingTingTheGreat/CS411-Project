@@ -1,0 +1,121 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it's above everything else */
+  }
+  
+  .modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 4px;
+    max-width: 800px; /* or any max-width or full-width as needed */
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto; /* In case content is too long */
+    color: black;
+  }
+
+  .modal-title {
+    font-size: 24px; /* or any other size you prefer */
+    font-weight: bold;
+  }
+
+
+  .conditions-toggle,
+  .lifts-toggle {
+    cursor: pointer;
+    font-weight: bold;
+    /* Add any other styles for your toggle */
+  }
+  
+  .arrow {
+    display: inline-block;
+    margin-left: 5px;
+    /* Styling the arrow to look like a dropdown arrow */
+    /* This is a simple implementation, you
+  can add more styles as needed */
+  }
+  
+  .arrow.down::before {
+  content: '▼'; /* Unicode down arrow */
+  font-size: 1em;
+  }
+  
+  .arrow.up::before {
+  content: '▲'; /*
+  Unicode up arrow */
+  font-size: 1em;
+  }
+  
+  .conditions-list {
+  display: none;
+  }
+  
+  .conditions-list.show,
+  .lifts-list.show {
+  display: block;
+  }
+
+  .condition-item {
+    margin: 5px 0;
+  }
+  
+  .close-button {
+    background-color: transparent; /* A transparent background */
+    border: 1px solid #333; /* A solid border to make it stand out */
+    border-radius: 50%; /* A circular shape */
+    width: 30px; /* The width of the button */
+    height: 30px; /* The height of the button */
+    display: flex; /* Using flex to center the content */
+    align-items: center; /* Vertical center */
+    justify-content: center; /* Horizontal center */
+    cursor: pointer; /* Change the cursor to indicate it's clickable */
+    position: absolute; /* Positioning the button */
+    top: 10px; /* Distance from the top */
+    right: 10px; /* Distance from the right */
+    font-weight: bold; /* Make the 'x' bold */
+    font-size: 16px; /* Size of the 'x' character */
+    color: #333; /* Color of the 'x' */
+    transition: background-color 0.2s, color 0.2s; /* Transition for the hover effect */
+  }
+  
+  .close-button:hover {
+    background-color: #333; /* Background color on hover */
+    color: #fff; /* Text color on hover */
+  }
+  
+  .close-button:focus {
+    outline: none; /* Removing the focus outline */
+  }
+  
+  /* Optional: adding a tooltip on hover (requires a title attribute on the button in your component) */
+  .close-button::after {
+    content: attr(title); /* Use the title attribute value */
+    visibility: hidden; /* Hidden by default */
+    background-color: #333; /* Background color of the tooltip */
+    color: #fff; /* Text color of the tooltip */
+    text-align: center; /* Center the text */
+    border-radius: 5px; /* Rounded corners for the tooltip */
+    padding: 5px 10px; /* Padding around the text */
+    position: absolute; /* Position the tooltip */
+    z-index: 1; /* Make sure it's above other elements */
+    bottom: 100%; /* Position it above the button */
+    left: 50%; /* Center it horizontally */
+    transform: translateX(-50%); /* Adjust the centering */
+    font-size: 12px; /* Smaller font size for the tooltip */
+    white-space: nowrap; /* Prevent it from wrapping */
+    transition: visibility 0.2s, opacity 0.2s ease-in-out; /* Transition for the tooltip */
+    opacity: 0; /* Make it transparent */
+  }
+  
+  .close-button:hover::after {
+    visibility: visible; /* Show the tooltip on hover */
+    opacity: 1; /* Make it opaque */
+  }
