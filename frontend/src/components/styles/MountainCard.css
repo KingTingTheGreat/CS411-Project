@@ -35,6 +35,22 @@
     color: #666;
   }
 
+  .mountain-details {
+    display: none; /* Hide details by default */
+    padding-top: 1em;
+  }
+  
+  .mountain-card.expanded .mountain-details {
+    display: block; /* Show details when expanded */
+  }
+  
+  /* Add specific styles for the number of lifts open */
+  .mountain-lifts {
+    margin-top: 0.5em;
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+
   .favorite-star {
     cursor: pointer;
     position: absolute;
@@ -45,28 +61,6 @@
     stroke: black; /* This ensures the stroke is black */
     stroke-width: 1px; /* Adjust as needed for outline thickness */
     z-index: 10;
-  }
-
-  .weather-info {
-    position: absolute;
-    bottom: 10px; /* Adjust as needed */
-    left: 10px; /* Adjust as needed */
-    display: flex;
-    align-items: center; /* Centers the items vertically */
-    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background to enhance visibility */
-    padding: 5px 10px; /* Padding around the text and icon */
-    border-radius: 8px; /* Rounded corners for the weather info box */
-  }
-  
-  .weather-info img {
-    width: 30px; /* Size of the weather icon */
-    height: 30px; /* Size of the weather icon */
-    margin-right: 5px; /* Space between the icon and temperature text */
-  }
-  
-  .weather-info span {
-    font-size: 16px; /* Size of the temperature text */
-    font-weight: bold; /* Makes the temperature text bold */
   }
 
 

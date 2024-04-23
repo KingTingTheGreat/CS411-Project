@@ -116,7 +116,7 @@ export interface Mountain {
     region: string;
     country: string;
     href: string;
-    //liftsOpen: number;
+    liftsOpen: number;
     units: string;
     location: Location;
     lifts: Lifts;
