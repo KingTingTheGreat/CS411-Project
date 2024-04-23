@@ -21,7 +21,11 @@ const MountainDetailsModal: React.FC<MountainDetailsModalProps> = ({ resort, onC
     <div className="modal-overlay">
       <div className="modal-content">
         <div className="modal-left">
-          <h2 className="modal-title">{resort.name}</h2>
+          <h2 className="modal-title">
+            <a href={resort.href} target="_blank" rel="noopener noreferrer">
+              {resort.name}
+            </a>
+          </h2>
 
           {/* Toggle button for conditions */}
           <div className="conditions-toggle" onClick={toggleConditions}>

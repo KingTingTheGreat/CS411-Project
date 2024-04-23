@@ -29,6 +29,7 @@
   .modal-title {
     font-size: 24px; /* or any other size you prefer */
     font-weight: bold;
+    text-decoration: underline;
   }
 
   .modal-left {
