@@ -60,3 +60,10 @@ export interface Mountain {
     href: string;
     liftsOpen: number;
 }
+
+export interface MountainShort {
+    id: number;
+    name: string;
+    region: string;
+    country: string;
+}

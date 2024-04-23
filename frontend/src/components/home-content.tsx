@@ -1,11 +1,11 @@
 import ValidateToken from "../hooks/validateToken";
 import SignIn from "./sign-in"
-import MountainCard from "./mountain-card";
-import { Mountain } from "../types"
+import MountainCard from "./mountain-short-card";
+import { MountainShort } from "../types"
 
 // placeholder data
-const exampleMountains: Mountain[] = [
-  {
+const exampleMountains: MountainShort[] = [
+  { 
     id: 1,
     name: "Vail",
     region: "NA",
