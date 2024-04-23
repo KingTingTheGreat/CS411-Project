@@ -8,13 +8,13 @@ const exampleMountains: MountainShort[] = [
   { 
     id: 1,
     name: "Vail",
-    region: "NA",
+    region: "CO",
     country: "United States"
   },
   {
     id: 2,
     name: "Park City",
-    region: "NA",
+    region: "UT",
     country: "United States"
   },
   {
@@ -44,7 +44,7 @@ const exampleMountains: MountainShort[] = [
   {
     id: 7,
     name: "Killington",
-    region: "NA",
+    region: "VT",
     country: "United States"
   },
   {

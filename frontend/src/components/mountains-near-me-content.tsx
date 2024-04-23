@@ -70,12 +70,12 @@ const MountainsNearMeContent: React.FC = () => {
               style={{ color: 'black' }} // Ensure text is visible
           />
           <select value={radius} onChange={handleRadiusChange} style={{ color: 'black' }}>
-              <option value="50">50 kilometers</option>
-              <option value="100">100 kilometers</option>
-              <option value="200">200 kilometers</option>
-              <option value="300">300 kilometers</option>
+              <option value="50">50 km</option>
+              <option value="100">100 km</option>
+              <option value="200">200 km</option>
+              <option value="300">300 km</option>
           </select>
-          <button onClick={searchMountains}>Search</button>
+          <button className="search-button" onClick={searchMountains}>Search</button>
           {loading ? (
               <div className="loader"></div>
           ) : (

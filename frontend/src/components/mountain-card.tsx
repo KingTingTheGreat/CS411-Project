@@ -25,7 +25,7 @@ const MountainCard: React.FC<MountainCardProps> = ({ mountain }) => {
     <>
       <div className="mountain-card" onClick={toggleModal}>
         <h2 className="mountain-name">{mountain.name}</h2>
-        <p className="mountain-info">{mountain.region}, {mountain.country}</p>
+        <p className="mountain-info">{mountain.name}, {mountain.region}, {mountain.country}</p>
         <p className="mountain-lifts" style={{ color: getLiftsOpenColor(mountain.lifts.stats.open) }}>
           {mountain.lifts.stats.open} lifts open
         </p>
