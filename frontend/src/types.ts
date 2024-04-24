@@ -9,6 +9,7 @@ export interface ApiResponse {
 }
 
 export interface ResortApiData {
+    slug: string;
     name: string;
     region: string;
     country: string;
@@ -101,6 +102,7 @@ export interface Condition {
 
 
 export interface Mountain {
+    id: string;
     name: string;
     region: string;
     country: string;

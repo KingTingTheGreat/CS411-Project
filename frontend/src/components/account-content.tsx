@@ -16,8 +16,8 @@ const AccountContent = () => {
 
   if (!user) return <div>User <span className="font-semibold">{id}</span> not found</div>
 
-  console.log(user);
-  console.log(user.favorites);
+  // console.log(user);
+  // console.log(user.favorites);
 
   return (
     <div>

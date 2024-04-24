@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { ResortApiData } from '../types';
+import { Mountain } from '../types';
 import './styles/MountainDetailsModal.css';
 import MountainMap from './mountain-map'
 
 interface MountainDetailsModalProps {
-  resort: ResortApiData;
+  resort: Mountain;
   onClose: () => void;
 }
 
