@@ -17,6 +17,12 @@ const MountainDetailsModal: React.FC<MountainDetailsModalProps> = ({ resort, onC
   const [showConditions, setShowConditions] = useState(false);
   const [showWeather, setShowWeather] = useState(false);
   const [visibleForecast, setVisibleForecast] = useState<VisibleForecast>({});
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  const toggleFavorite = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
+    e.stopPropagation(); // Prevent modal from closing when clicking the star
+    setIsFavorite(!isFavorite);
+  };
 
   const toggleLifts = () => setShowLifts(!showLifts);
   const toggleConditions = () => setShowConditions(!showConditions);
@@ -44,12 +50,24 @@ const MountainDetailsModal: React.FC<MountainDetailsModalProps> = ({ resort, onC
     <div className="modal-overlay">
       <div className="modal-content">
         <div className="modal-left">
+          <div className="modal-title-container">
           <h2 className="modal-title">
             <a href={resort.href} target="_blank" rel="noopener noreferrer">
               {resort.name}
             </a>
+            <svg
+              onClick={toggleFavorite}
+              className="favorite-star-detail"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill={isFavorite ? 'gold' : 'none'}
+              stroke="black"
+              strokeWidth="2"
+            >
+              <polygon points="12 17.27 18.18 21 16.54 13.97 22 9.24 14.81 8.69 12 2 9.19 8.69 2 9.24 7.46 13.97 5.82 21 12 17.27"/>
+            </svg>
           </h2>
-
+          </div>
           {/* Toggle button for conditions */}
           <div className="conditions-toggle" onClick={toggleConditions}>
             Conditions
