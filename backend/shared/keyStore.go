@@ -2,6 +2,7 @@ package shared
 
 import (
 	"backend/models"
+	"fmt"
 	"sync"
 )
 
@@ -11,6 +12,7 @@ type KeyUserStore struct {
 }
 
 func (k *KeyUserStore) Set(key string, user models.User) {
+	fmt.Println("Updating key", key, "to", user)
 	k.mu.Lock()
 	defer k.mu.Unlock()
 	k.Store[key] = user

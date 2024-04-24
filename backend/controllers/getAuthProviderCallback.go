@@ -13,17 +13,18 @@ import (
 func GetAuthProviderCallback(c echo.Context) error {
 	req := c.Request()
 
-	user, err := gothic.CompleteUserAuth(c.Response(), req)
+	gothicUser, err := gothic.CompleteUserAuth(c.Response(), req)
 	if err != nil {
 		return err
 	}
-	if CreateUser(user.Email) {
-		fmt.Println("Created new user with email: ", user.Email)
+	user, err := CreateUser(gothicUser.Email)
+	if err != nil {
+		return err
 	}
 	fmt.Println("Authenticated user: ", user.Email)
 
 	user_key := utils.GenerateToken()
-	shared.MyKeyStore.Set(user_key, models.User{Email: user.Email})
+	shared.MyKeyStore.Set(user_key, models.User{Email: user.Email, Favorites: user.Favorites})
 
 	fmt.Println("User key: ", user_key)
 

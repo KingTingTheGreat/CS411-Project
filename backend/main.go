@@ -53,6 +53,7 @@ func main() {
 	e.GET("/auth/logout", controllers.GetLogout)
 
 	e.POST("/validate-token", controllers.ValidateToken)
+	e.PUT("/favorite-status", controllers.PutFavoriteStatus)
 	e.POST("/profile", controllers.GetProfile)
 
 	e.GET("/resorts", controllers.GetResorts)
