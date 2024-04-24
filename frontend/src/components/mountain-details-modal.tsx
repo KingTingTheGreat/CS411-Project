@@ -8,14 +8,37 @@ interface MountainDetailsModalProps {
   onClose: () => void;
 }
 
+interface VisibleForecast {
+  [key: string]: boolean; // Each key is a date string, value is visibility boolean
+}
+
 const MountainDetailsModal: React.FC<MountainDetailsModalProps> = ({ resort, onClose }) => {
   const [showLifts, setShowLifts] = useState(false);
   const [showConditions, setShowConditions] = useState(false);
+  const [showWeather, setShowWeather] = useState(false);
+  const [visibleForecast, setVisibleForecast] = useState<VisibleForecast>({});
 
   const toggleLifts = () => setShowLifts(!showLifts);
   const toggleConditions = () => setShowConditions(!showConditions);
+  const toggleWeather = () => setShowWeather(!showWeather);
+  const toggleForecast = (date: string) => {
+    setVisibleForecast(prevState => ({
+      ...prevState,
+      [date]: !prevState[date]
+    }));
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  };
 
   const unit = resort.units === 'metric' ? 'cm' : 'in'; // Assuming 'metric' means centimeters
+
+  const getIconPath = (fullUrl: string): string => {
+    const parts = fullUrl.split('/');
+    return '/' + parts.slice(-4).join('/');
+  };
 
   return (
     <div className="modal-overlay">
@@ -65,6 +88,36 @@ const MountainDetailsModal: React.FC<MountainDetailsModalProps> = ({ resort, onC
           )}
 
           <button className="close-button" onClick={onClose}> X </button>
+          <br/>
+          <div className="weather-title" onClick={toggleWeather}>
+            Weather
+            <span className={`arrow ${showWeather ? 'up' : 'down'}`}></span>
+          </div>
+          {showWeather && (
+            <div className="weather-details">
+              {resort.weather.forecast.forecastday.map(day => (
+                <div key={day.date}>
+                  <div className="forecast-toggle" onClick={() => toggleForecast(day.date)}>
+                    <strong>{formatDate(day.date)}</strong>
+                    <img src={getIconPath(day.day.condition.icon)} alt={day.day.condition.text} className="weather-icon" />
+                    <span className={`arrow ${visibleForecast[day.date] ? 'up' : 'down'}`}></span>
+                  </div>
+                  {visibleForecast[day.date] && (
+                    <div className="forecast-details">
+                      <div>Max Temp: {day.day.maxtemp_f} F</div>
+                      <div>Min Temp: {day.day.mintemp_f} F</div>
+                      <div>Wind: {day.day.maxwind_mph} mph</div>
+                      <div>Precipitation: {day.day.totalprecip_in} in</div>
+                      <div>Snow: {day.day.totalsnow_cm} cm</div>
+                      <div>Rain Chance: {day.day.daily_chance_of_rain}%</div>
+                      <div>Snow Chance: {day.day.daily_chance_of_snow}%</div>
+                      <div>UV Index: {day.day.uv}</div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
         <div className="map-container">
           <MountainMap lat={resort.location.latitude} lng={resort.location.longitude} />

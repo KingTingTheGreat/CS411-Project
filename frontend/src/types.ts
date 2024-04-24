@@ -60,35 +60,35 @@ export interface WeatherForecast {
 }
 
 export interface Current {
-    lastUpdated: string;
-    tempF: number;
-    isDay: number;
+    last_updated: string;
+    temp_f: number;
+    is_day: number;
     condition: Condition;
-    windMph: number;
+    wind_mph: number;
     humidity: number;
-    precipIn: number;
+    precip_in: number;
     cloud: number;
-    feelsLikeF: number;
+    feelslike_f: number;
 }
 
 export interface Forecast {
-    forecastDay: ForecastDay[];
+    forecastday: forecastday[];
 }
 
-export interface ForecastDay {
+export interface forecastday {
     date: string;
     day: Day;
 }
 
 export interface Day {
-    maxTempF: number;
-    minTempF: number;
-    avgTempF: number;
-    maxWindMph: number;
-    totalPrecipIn: number;
-    totalSnowCm: number;
-    dailyChanceOfRain: number;
-    dailyChanceOfSnow: number;
+    maxtemp_f: number;
+    mintemp_f: number;
+    avgtemp_f: number;
+    maxwind_mph: number;
+    totalprecip_in: number;
+    totalsnow_cm: number;
+    daily_chance_of_rain: number;
+    daily_chance_of_snow: number;
     condition: Condition;
     uv: number;
 }

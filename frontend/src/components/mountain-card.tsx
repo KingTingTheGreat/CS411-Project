@@ -28,15 +28,9 @@ const MountainCard: React.FC<MountainCardProps> = ({ mountain }) => {
   };
 
   const weatherIconUrl = mountain.weather.current.condition.icon;
-  console.log("weather url: ", mountain.weather.current.condition.icon);
   const iconName = weatherIconUrl.split('/').pop();
-  const timeOfDayFolder = mountain.weather.current.isDay ? 'day' : 'night';
+  const timeOfDayFolder = mountain.weather.current.is_day ? 'day' : 'night';
   const localIconPath = `/weather/64x64/${timeOfDayFolder}/${iconName}`;
-  console.log("iconName: ", localIconPath);
-  console.log("Mountain:", mountain.weather.current);
-  console.log("IsDay: ", mountain.weather.current.isDay);
-  console.log("Last Updated: ", mountain.weather.current.lastUpdated);
-  console.log("Forecast Day: ", mountain.weather.current.feelsLikeF);
 
   return (
     <>
@@ -48,7 +42,7 @@ const MountainCard: React.FC<MountainCardProps> = ({ mountain }) => {
         </p>
         <div className="weather-container">
           <img src={localIconPath} alt={mountain.weather.current.condition.text} className="weather-icon" />
-          <span className="temperature-text">{mountain.weather.current.tempF}°F</span>
+          <span className="temperature-text">{mountain.weather.current.temp_f}°F</span>
         </div>
         <svg
           onClick={toggleFavorite}
