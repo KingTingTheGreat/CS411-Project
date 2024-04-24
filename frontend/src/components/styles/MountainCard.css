@@ -63,5 +63,23 @@
     z-index: 10;
   }
 
+  .weather-container {
+    position: absolute;
+    bottom: 10px; /* Adjust as needed for spacing from the bottom */
+    left: 10px; /* Adjust as needed for spacing from the left */
+    display: flex;
+    align-items: center;
+  }
+  
+  .weather-icon {
+    width: 30px; /* Adjust as needed */
+    height: 30px; /* Adjust as needed */
+    margin-right: 5px;
+  }
+  
+  .temperature-text {
+    font-size: 0.9rem;
+    color: black;
+  }
 
   
