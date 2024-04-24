@@ -100,8 +100,8 @@ func GetResorts(c echo.Context) error {
 				return
 			}
 
-			weatherClient := clients.NewWeatherClient()                                              // Ensure you have this client set up
-			weather, err := weatherClient.FetchWeather(r.Location.Latitude, r.Location.Longitude, 7) // Assuming you want a 7-day forecast
+			weatherClient := clients.NewWeatherClient()                                               // Ensure you have this client set up
+			weather, err := weatherClient.FetchWeather(r.Location.Latitude, r.Location.Longitude, 14) // Assuming you want a 7-day forecast
 			if err != nil {
 				log.Println("Error fetching weather for resort", r.Name, ":", err)
 				return

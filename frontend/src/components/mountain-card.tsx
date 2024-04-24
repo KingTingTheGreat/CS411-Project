@@ -2,10 +2,10 @@
 import React, { useState } from 'react';
 import './styles/MountainCard.css';
 import MountainDetailsModal from './mountain-details-modal';
-import { Mountain } from '../types';
+import { ResortApiData } from '../types';
 
 interface MountainCardProps {
-  mountain: Mountain;
+  mountain: ResortApiData;
 }
 
 const MountainCard: React.FC<MountainCardProps> = ({ mountain }) => {
@@ -27,11 +27,10 @@ const MountainCard: React.FC<MountainCardProps> = ({ mountain }) => {
     setIsFavorite(!isFavorite);
   };
 
-  const timeOfDayFolder = mountain.weather.current.isDay ? 'day' : 'night';
-  
-  // Use the code to create the local path
-  const iconCode = mountain.weather.current.condition.code;
-  const localIconPath = `../../weather/64x64/${timeOfDayFolder}/${iconCode}.png`;
+  const weatherIconUrl = mountain.weather.current.condition.icon;
+  const iconName = weatherIconUrl.split('/').pop();
+  const timeOfDayFolder = mountain.weather.current.is_day ? 'day' : 'night';
+  const localIconPath = `/weather/64x64/${timeOfDayFolder}/${iconName}`;
 
   return (
     <>
@@ -41,9 +40,9 @@ const MountainCard: React.FC<MountainCardProps> = ({ mountain }) => {
         <p className="mountain-lifts" style={{ color: getLiftsOpenColor(mountain.lifts.stats.open) }}>
           {mountain.lifts.stats.open} lifts open
         </p>
-        <div className="weather-info">
+        <div className="weather-container">
           <img src={localIconPath} alt={mountain.weather.current.condition.text} className="weather-icon" />
-          {/* ... */}
+          <span className="temperature-text">{mountain.weather.current.temp_f}°F</span>
         </div>
         <svg
           onClick={toggleFavorite}
