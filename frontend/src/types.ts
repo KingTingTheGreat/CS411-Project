@@ -55,19 +55,8 @@ export interface Conditions {
 }
 
 export interface WeatherForecast {
-    location: Location;
     current: Current;
     forecast: Forecast;
-}
-
-export interface Location {
-    name: string;
-    region: string;
-    country: string;
-    latitude: number;
-    longitude: number;
-    tzID: string;
-    localtime: string;
 }
 
 export interface Current {

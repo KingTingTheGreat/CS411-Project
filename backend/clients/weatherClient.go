@@ -40,19 +40,8 @@ func (wc *WeatherClient) FetchWeather(lat, lon float64, days int) (*WeatherForec
 }
 
 type WeatherForecast struct {
-	Location Location `json:"location"`
 	Current  Current  `json:"current"`
 	Forecast Forecast `json:"forecast"`
-}
-
-type Location struct {
-	Name      string  `json:"name"`
-	Region    string  `json:"region"`
-	Country   string  `json:"country"`
-	Lat       float64 `json:"lat"`
-	Lon       float64 `json:"lon"`
-	TzID      string  `json:"tz_id"`
-	LocalTime string  `json:"localtime"`
 }
 
 type Current struct {
