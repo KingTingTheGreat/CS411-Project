@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"backend/responses"
-	// "backend/types"
 	"net/http"
 	"fmt"
 	"time"
@@ -35,16 +34,6 @@ func GetUser(c echo.Context) error {
 		res := responses.Response{Status:http.StatusBadRequest, Message: "User not found", Data: data}
 		return c.JSON(http.StatusBadRequest, res) 
 	}
-
-	// // get user data from database
-	// Nuser := types.User{
-	// 	Id:                "test-id",
-	// 	Username:          "test-username",
-	// 	Email:             email,
-	// 	FirstName:         "test-first-name",
-	// 	LastName:          "test-last-name",
-	// 	FavoriteMountains: []string{"test-mountain1", "test-mountain2"},
-	// }
 
 	fmt.Printf("Got user %v\n", user)
 
