@@ -24,12 +24,26 @@
     flex-direction: row;
     justify-content: space-between; /* Ensures content is spaced out to the sides */
     align-items: flex-start;
+    position: relative;
   }
 
   .modal-title {
-    font-size: 24px; /* or any other size you prefer */
+    display: flex;
+    align-items: center; /* Aligns items vertically in the center */
+    font-size: 24px;
     font-weight: bold;
     text-decoration: underline;
+  }
+
+  .modal-title-container {
+    display: flex;
+  }
+  
+  .favorite-star-detail {
+    margin-left: 10px; /* Space between the name and the star */
+    cursor: pointer; /* Indicates the star is clickable */
+    width: 24px; /* Optional: Adjust size as needed */
+    height: 24px; /* Optional: Adjust size as needed */
   }
 
   .modal-left {
@@ -81,59 +95,76 @@
   .condition-item {
     margin: 5px 0;
   }
+
+  .lift-item {
+    display: flex;
+    justify-content: space-between; /* Ensures that the lift name and status are on opposite ends */
+    align-items: center; /* Centers them vertically */
+    padding: 5px 0; /* Adds some padding for visual space */
+  }
+  
+  .lift-status-open, .lift-status-closed {
+    padding: 3px 6px;
+    border-radius: 4px;
+    color: white; /* Ensures text color is white */
+  }
+  
+  .lift-status-open {
+    background-color: green; /* Visual cue for open */
+  }
   
   .close-button {
-    background-color: transparent; /* A transparent background */
-    border: 1px solid #333; /* A solid border to make it stand out */
-    border-radius: 50%; /* A circular shape */
-    width: 30px; /* The width of the button */
-    height: 30px; /* The height of the button */
-    display: flex; /* Using flex to center the content */
-    align-items: center; /* Vertical center */
-    justify-content: center; /* Horizontal center */
-    cursor: pointer; /* Change the cursor to indicate it's clickable */
-    position: absolute; /* Positioning the button */
-    top: 10px; /* Distance from the top */
-    right: 10px; /* Distance from the right */
-    font-weight: bold; /* Make the 'x' bold */
-    font-size: 16px; /* Size of the 'x' character */
-    color: #333; /* Color of the 'x' */
-    transition: background-color 0.2s, color 0.2s; /* Transition for the hover effect */
-  }
-  
-  .close-button:hover {
-    background-color: #333; /* Background color on hover */
-    color: #fff; /* Text color on hover */
-  }
-  
-  .close-button:focus {
+    background-color: transparent;
+    border: 1px solid #333;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: absolute; /* Ensure it's absolutely positioned */
+    top: 10px; /* Distance from the top of the modal */
+    left: 10px; /* Distance from the left of the modal */
+    font-weight: bold;
+    font-size: 16px;
+    color: #333;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.close-button:hover {
+    background-color: #333;
+    color: #fff;
+}
+
+.close-button:focus {
     outline: none; /* Removing the focus outline */
-  }
-  
-  /* Optional: adding a tooltip on hover (requires a title attribute on the button in your component) */
-  .close-button::after {
-    content: attr(title); /* Use the title attribute value */
-    visibility: hidden; /* Hidden by default */
-    background-color: #333; /* Background color of the tooltip */
-    color: #fff; /* Text color of the tooltip */
-    text-align: center; /* Center the text */
-    border-radius: 5px; /* Rounded corners for the tooltip */
-    padding: 5px 10px; /* Padding around the text */
-    position: absolute; /* Position the tooltip */
-    z-index: 1; /* Make sure it's above other elements */
-    bottom: 100%; /* Position it above the button */
-    left: 50%; /* Center it horizontally */
-    transform: translateX(-50%); /* Adjust the centering */
-    font-size: 12px; /* Smaller font size for the tooltip */
-    white-space: nowrap; /* Prevent it from wrapping */
-    transition: visibility 0.2s, opacity 0.2s ease-in-out; /* Transition for the tooltip */
-    opacity: 0; /* Make it transparent */
-  }
-  
-  .close-button:hover::after {
+}
+
+/* Tooltips for the close button 
+.close-button::after {
+    content: attr(title);
+    visibility: hidden; 
+    background-color: #333; 
+    color: #fff; 
+    text-align: center;
+    border-radius: 5px; 
+    padding: 5px 10px; 
+    position: absolute;
+    z-index: 1; 
+    bottom: 100%; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    font-size: 12px; 
+    white-space: nowrap; 
+    transition: visibility 0.2s, opacity 0.2s ease-in-out;
+    opacity: 0;
+}*/ß
+
+.close-button:hover::after {
     visibility: visible; /* Show the tooltip on hover */
     opacity: 1; /* Make it opaque */
-  }
+}
 
   .weather-title {
     font-size: 18px; /* or any other size you prefer */
@@ -153,15 +184,17 @@
   .forecast-toggle {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between; /* This will push the date and icon to one end and the arrow to the other */
+    padding: 5px 0; /* Adds padding for better spacing */
+  }
+  
+  .weather-icon {
+    margin: 0 10px; /* Adds margin between the icon and the arrow */
+    width: 24px;
+    height: 24px;
   }
   
   .forecast-toggle strong {
     margin-right: 8px;  /* Adjust spacing as needed */
   }
   
-  .weather-icon {
-    width: 24px;  /* Adjust size as needed */
-    height: 24px;  /* Adjust size as needed */
-    margin-right: 8px;  /* Adjust spacing as needed */
-  }

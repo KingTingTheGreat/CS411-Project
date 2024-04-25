@@ -12,6 +12,7 @@ export interface ResortApiData {
     name: string;
     region: string;
     country: string;
+    liftsOpen: number;
     href: string;
     units: string;
     location: Location;
