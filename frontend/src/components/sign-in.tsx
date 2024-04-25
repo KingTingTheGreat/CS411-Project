@@ -1,7 +1,9 @@
 const SignIn = () => {
   return (
     <div className="flex flex-col items-center p-4 h-96">
-      <h1 className="text-5xl p-1 m-1 text-center">Welcome to our CS411 Project</h1>
+      <h1 className="text-5xl p-1 m-1 text-center">
+        Welcome to our CS411 Project
+      </h1>
       <div className="flex justify-center items-center w-[80%] h-[80%]">
         <a
           href="http://localhost:6969/auth/google"
@@ -11,7 +13,7 @@ const SignIn = () => {
         </a>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SignIn
+export default SignIn;

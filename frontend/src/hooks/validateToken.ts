@@ -4,13 +4,14 @@ const ValidateToken = () => {
   const token = localStorage.getItem("411ProjectToken");
 
   const { data, error } = useSwr(
-    'http://localhost:6969/validate-token',
-    (url: string) => fetch(url, {
-      method: "POST", 
-      headers: {
-        Authorization: `Bearer ${token}`,
-      }
-    }).then((res) => res.json())
+    "http://localhost:6969/validate-token",
+    (url: string) =>
+      fetch(url, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }).then((res) => res.json())
   );
 
   if (!token || token == "" || error || (data && data.error)) return false;

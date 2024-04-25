@@ -14,7 +14,12 @@ const AccountContent = () => {
 
   const user: User = data.data.user;
 
-  if (!user) return <div>User <span className="font-semibold">{id}</span> not found</div>
+  if (!user)
+    return (
+      <div>
+        User <span className="font-semibold">{id}</span> not found
+      </div>
+    );
 
   // console.log(user);
   // console.log(user.favorites);
