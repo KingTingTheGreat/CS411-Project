@@ -11,6 +11,8 @@
     align-items: center;
     text-align: center;
     position: relative;
+    min-width: 300px;
+    min-height:200px;
   }
   
   .mountain-card:hover {
