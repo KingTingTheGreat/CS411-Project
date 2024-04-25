@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./styles/styles.css";
 import { Mountain } from "../types";
 import MountainCard from "./mountain-card";
 
@@ -27,7 +28,7 @@ const MountainCardId = ({
   }
 
   if (!mountain) {
-    return <div>Loading...</div>;
+    return <div className="loader"></div>
   }
 
   return <MountainCard mountain={mountain} favorites={favorites} />;
