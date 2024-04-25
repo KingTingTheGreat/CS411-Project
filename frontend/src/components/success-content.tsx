@@ -15,9 +15,16 @@ const SuccessContent = () => {
   console.log(token);
 
   if (ValidateToken() === false) {
-    return <div>Sign in failed, please try again</div>;
+    return (
+      <div>
+        <h3>Sign in failed, please try again</h3>
+      </div>
+    );
   }
 
+  window.location.href = "/";
+
+  // this shouldn't be reached, but just in case redirect fails
   return (
     <div className="flex flex-col items-center">
       <h3 className="text-lg">Successfully signed in!</h3>

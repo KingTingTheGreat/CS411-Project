@@ -16,7 +16,11 @@ const HomeContent = () => {
         <h3 className="text-6xl text-center m-2">Popular mountains</h3>
         <div className="flex flex-wrap p-2">
           {topMountains.map((mountainId) => (
-            <MountainCardId id={mountainId} favorites={profile.favorites} />
+            <MountainCardId
+              key={mountainId}
+              id={mountainId}
+              favorites={profile.favorites}
+            />
           ))}
         </div>
       </div>

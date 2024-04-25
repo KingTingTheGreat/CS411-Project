@@ -11,7 +11,6 @@ const MountainCard = ({
   favorites: string[];
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  console.log(favorites);
   const [isFavorite, setIsFavorite] = useState(
     favorites.includes(mountain.id) || favorites.includes(mountain.slug)
   );
@@ -30,8 +29,6 @@ const MountainCard = ({
   };
 
   const toggleFavorite = (event: React.MouseEvent) => {
-    console.log("toggling favorite");
-    console.log(mountain.id ?? mountain.slug);
     event.stopPropagation();
     setIsFavorite(!isFavorite);
   };
