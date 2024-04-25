@@ -28,7 +28,11 @@ const MountainCardId = ({
   }
 
   if (!mountain) {
-    return <div className="loader"></div>
+    return (
+      <div style={{minWidth:"350px", minHeight:"200px"}}>
+        <div className="loader"></div>
+      </div>
+    )
   }
 
   return <MountainCard mountain={mountain} favorites={favorites} />;
