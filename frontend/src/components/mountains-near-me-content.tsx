@@ -1,16 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import './styles/styles.css';
-import MountainCard from './mountain-card';
-import { Mountain, ResortApiData } from '../types';
+import React, { useEffect, useState } from "react";
+import "./styles/styles.css";
+import MountainCard from "./mountain-card";
+import { Mountain, ResortApiData } from "../types";
+import GetProfile from "../hooks/getProfile";
 
 const MountainsNearMeContent: React.FC = () => {
   // Add useEffect to track when the component mounts
   useEffect(() => {
-    console.log('MountainsNearMeContent mounted');
+    console.log("MountainsNearMeContent mounted");
   }, []);
 
+  const [user, setUser] = useState(GetProfile());
+  if (!user) setUser({ favorites: [] });
   const [loading, setLoading] = useState(false);
-  const [address, setAddress] = useState<string>('');
+  const [address, setAddress] = useState<string>("");
   const [radius, setRadius] = useState<number>(50); // Default radius in kilometers
   const [mountains, setMountains] = useState<Mountain[]>([]);
 
@@ -20,15 +23,18 @@ const MountainsNearMeContent: React.FC = () => {
       const openPercentageB = b.lifts.stats.percentage.open;
 
       if (openPercentageA === openPercentageB) {
-        if (openPercentageA === 0) { // Check if both are zero and then compare scheduled
-          return b.lifts.stats.percentage.scheduled - a.lifts.stats.percentage.scheduled;
+        if (openPercentageA === 0) {
+          // Check if both are zero and then compare scheduled
+          return (
+            b.lifts.stats.percentage.scheduled -
+            a.lifts.stats.percentage.scheduled
+          );
         }
         return b.conditions.base - a.conditions.base; // Compare snow base if percentages are equal
       }
       return openPercentageB - openPercentageA; // Primary sorting by open percentage
     });
   };
-
 
   // Track state changes
   useEffect(() => {
@@ -52,11 +58,13 @@ const MountainsNearMeContent: React.FC = () => {
   const fetchMountains = (lat: number, lng: number) => {
     // console.log(`Inside fetchMountains with lat: ${lat}, lng: ${lng}, radius: ${radius}`);
     setLoading(true);
-    fetch(`http://localhost:6969/resorts?lat=${lat}&lng=${lng}&radius=${radius}`)
-      .then(response => response.json())
+    fetch(
+      `http://localhost:6969/resorts?lat=${lat}&lng=${lng}&radius=${radius}`
+    )
+      .then((response) => response.json())
       .then((resorts: ResortApiData[]) => {
         // console.log('Processed data:', resorts);
-        const processedData = resorts.map(resort => ({
+        const processedData = resorts.map((resort) => ({
           id: resort.slug,
           name: resort.name,
           region: resort.region,
@@ -67,14 +75,14 @@ const MountainsNearMeContent: React.FC = () => {
           location: resort.location,
           lifts: resort.lifts,
           conditions: resort.conditions,
-          weather: resort.weather
+          weather: resort.weather,
         }));
         const sortedMountains = sortMountains(processedData); // Sort the data here
-        console.log('Setting mountains:', sortedMountains);
+        console.log("Setting mountains:", sortedMountains);
         setMountains(sortedMountains);
       })
-      .catch(error => {
-        console.error('Error fetching mountains:', error);
+      .catch((error) => {
+        console.error("Error fetching mountains:", error);
       })
       .finally(() => {
         setLoading(false);
@@ -83,14 +91,18 @@ const MountainsNearMeContent: React.FC = () => {
 
   const searchMountains = () => {
     // console.log('searchMountains called for address:', address);
-    fetch(`http://localhost:6969/getCoordinates?address=${encodeURIComponent(address)}`)
-      .then(response => response.json())
-      .then(data => {
+    fetch(
+      `http://localhost:6969/getCoordinates?address=${encodeURIComponent(
+        address
+      )}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
         // console.log('Coordinates received:', data);
         fetchMountains(data.latitude, data.longitude);
       })
-      .catch(error => {
-        console.error('Error fetching coordinates:', error);
+      .catch((error) => {
+        console.error("Error fetching coordinates:", error);
       });
   };
 
@@ -105,22 +117,34 @@ const MountainsNearMeContent: React.FC = () => {
         value={address}
         onChange={handleAddressChange}
         placeholder="Enter your address"
-        style={{ color: 'black' }} // Ensure text is visible
+        style={{ color: "black" }} // Ensure text is visible
       />
-      <select value={radius} onChange={handleRadiusChange} style={{ color: 'black' }}>
+      <select
+        value={radius}
+        onChange={handleRadiusChange}
+        style={{ color: "black" }}
+      >
         <option value="50">50 km</option>
         <option value="100">100 km</option>
         <option value="200">200 km</option>
         <option value="300">300 km</option>
       </select>
-      <button className="search-button" onClick={searchMountains}>Search</button>
+      <button className="search-button" onClick={searchMountains}>
+        Search
+      </button>
       {loading ? (
         <div className="loader"></div>
       ) : (
         <div className="mountains-container">
-          {mountains.length > 0 ? mountains.map(mountain => (
-            <MountainCard key={mountain.name} mountain={mountain} />
-          )) : (
+          {mountains.length > 0 ? (
+            mountains.map((mountain) => (
+              <MountainCard
+                key={mountain.name}
+                mountain={mountain}
+                favorites={user.favorites}
+              />
+            ))
+          ) : (
             <p>No mountains found.</p>
           )}
         </div>

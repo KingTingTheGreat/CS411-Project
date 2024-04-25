@@ -21,6 +21,7 @@ type Resort struct {
 }
 
 var AllResorts []Resort
+var AllResortsMap map[string]Resort
 
 func InitResorts() {
 	client := clients.NewSkiResortClient()
@@ -42,5 +43,11 @@ func InitResorts() {
 
 		AllResorts = append(AllResorts, pageResult.Data...)
 	}
+
+	AllResortsMap = make(map[string]Resort)
+	for _, resort := range AllResorts {
+		AllResortsMap[resort.Slug] = resort
+	}
+
 	log.Println("Initialized AllResorts")
 }

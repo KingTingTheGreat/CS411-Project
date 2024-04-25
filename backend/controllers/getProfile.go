@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"backend/models"
 	"backend/responses"
 	"backend/shared"
 	"net/http"
@@ -33,6 +34,9 @@ func GetProfile(c echo.Context) error {
 	return c.JSON(http.StatusOK, responses.Response{
 		Status:  http.StatusOK,
 		Message: "Success",
-		Data:    &echo.Map{"user": user},
+		Data:    &echo.Map{"user": models.CleanUser{
+			Email: user.Email,
+			Favorites: user.Favorites,
+		}},
 	})
 }
