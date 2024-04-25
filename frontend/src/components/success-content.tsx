@@ -8,6 +8,7 @@ const LinkWrapper = ({url, text}: {url:string, text:string}) => {
 const SuccessContent = () => {
   const { token } = useParams();
   localStorage.setItem("411ProjectToken", token as string);
+  console.log(token)
 
   if (ValidateToken() === false) {
     return <div>Sign in failed, please try again</div>;

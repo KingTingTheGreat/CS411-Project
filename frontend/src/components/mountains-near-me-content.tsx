@@ -32,31 +32,32 @@ const MountainsNearMeContent: React.FC = () => {
 
   // Track state changes
   useEffect(() => {
-    console.log('Loading state changed:', loading);
+    // console.log('Loading state changed:', loading);
   }, [loading]);
 
   useEffect(() => {
-    console.log('Mountains state changed:', mountains);
+    // console.log('Mountains state changed:', mountains);
   }, [mountains]);
 
   const handleAddressChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('Address changed:', event.target.value);
+    // console.log('Address changed:', event.target.value);
     setAddress(event.target.value);
   };
 
   const handleRadiusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    console.log('Radius changed:', event.target.value);
+    // console.log('Radius changed:', event.target.value);
     setRadius(Number(event.target.value));
   };
 
   const fetchMountains = (lat: number, lng: number) => {
-    console.log(`Inside fetchMountains with lat: ${lat}, lng: ${lng}, radius: ${radius}`);
+    // console.log(`Inside fetchMountains with lat: ${lat}, lng: ${lng}, radius: ${radius}`);
     setLoading(true);
     fetch(`http://localhost:6969/resorts?lat=${lat}&lng=${lng}&radius=${radius}`)
       .then(response => response.json())
       .then((resorts: ResortApiData[]) => {
-        console.log('Processed data:', resorts);
+        // console.log('Processed data:', resorts);
         const processedData = resorts.map(resort => ({
+          id: resort.slug,
           name: resort.name,
           region: resort.region,
           country: resort.country,
@@ -81,11 +82,11 @@ const MountainsNearMeContent: React.FC = () => {
   };
 
   const searchMountains = () => {
-    console.log('searchMountains called for address:', address);
+    // console.log('searchMountains called for address:', address);
     fetch(`http://localhost:6969/getCoordinates?address=${encodeURIComponent(address)}`)
       .then(response => response.json())
       .then(data => {
-        console.log('Coordinates received:', data);
+        // console.log('Coordinates received:', data);
         fetchMountains(data.latitude, data.longitude);
       })
       .catch(error => {
@@ -94,7 +95,7 @@ const MountainsNearMeContent: React.FC = () => {
   };
 
   // Track render
-  console.log('MountainsNearMeContent rendering');
+  // console.log('MountainsNearMeContent rendering');
 
   return (
     <div>

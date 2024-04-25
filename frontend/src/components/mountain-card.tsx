@@ -2,15 +2,14 @@
 import React, { useState } from 'react';
 import './styles/MountainCard.css';
 import MountainDetailsModal from './mountain-details-modal';
-import { ResortApiData } from '../types';
+import { Mountain } from "../types"
 
-interface MountainCardProps {
-  mountain: ResortApiData;
-}
-
-const MountainCard: React.FC<MountainCardProps> = ({ mountain }) => {
+const MountainCard = ({ mountain }: {mountain: Mountain}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
+  const token = localStorage.getItem("411ProjectToken")
+
+  // console.log(mountain)
 
   const getLiftsOpenColor = (liftsOpen: number) => {
     if (liftsOpen < 3) return 'red';
@@ -23,9 +22,25 @@ const MountainCard: React.FC<MountainCardProps> = ({ mountain }) => {
   };
 
   const toggleFavorite = (event: React.MouseEvent) => {
+    console.log('toggling favorite')
+    console.log(mountain.id)
     event.stopPropagation();
-    setIsFavorite(!isFavorite);
+    setIsFavorite(!isFavorite)
   };
+
+  const toggleDB = () => {
+    console.log('updating db')
+    const formData = new FormData();
+    formData.append('id', mountain.id)
+    formData.append('status', isFavorite ? "false" : "true")
+    fetch('http://localhost:6969/favorite-status', {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`, 
+      },
+      body: formData
+    })
+  }
 
   const weatherIconUrl = mountain.weather.current.condition.icon;
   const iconName = weatherIconUrl.split('/').pop();
@@ -45,7 +60,7 @@ const MountainCard: React.FC<MountainCardProps> = ({ mountain }) => {
           <span className="temperature-text">{mountain.weather.current.temp_f}°F</span>
         </div>
         <svg
-          onClick={toggleFavorite}
+          onClick={(e) => {toggleFavorite(e); toggleDB();}}
           className="favorite-star"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
