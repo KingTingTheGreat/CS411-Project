@@ -110,32 +110,36 @@ const MountainsNearMeContent: React.FC = () => {
   // console.log('MountainsNearMeContent rendering');
 
   return (
-    <div>
-      <h1>Search for a mountain below:</h1>
-      <input
-        type="text"
-        value={address}
-        onChange={handleAddressChange}
-        placeholder="Enter your address"
-        style={{ color: "black" }} // Ensure text is visible
-      />
-      <select
-        value={radius}
-        onChange={handleRadiusChange}
-        style={{ color: "black" }}
-      >
-        <option value="50">50 km</option>
-        <option value="100">100 km</option>
-        <option value="200">200 km</option>
-        <option value="300">300 km</option>
-      </select>
-      <button className="search-button" onClick={searchMountains}>
-        Search
-      </button>
+    <div className="w-full flex flex-col items-center">
+      <div>
+        <h1 className="text-center">Search for a mountain below:</h1>
+        <div className="flex justify-around">
+          <input
+            type="text"
+            value={address}
+            onChange={handleAddressChange}
+            placeholder="Enter your address"
+            style={{ color: "black", padding: "4px", margin: "2px" }} // Ensure text is visible
+          />
+          <select
+            value={radius}
+            onChange={handleRadiusChange}
+            style={{ color: "black", padding: "4px", margin: "2px" }}
+          >
+            <option value="50">50 km</option>
+            <option value="100">100 km</option>
+            <option value="200">200 km</option>
+            <option value="300">300 km</option>
+          </select>
+          <button className="search-button" onClick={searchMountains}>
+            Search
+          </button>
+        </div>
+      </div>
       {loading ? (
         <div className="loader"></div>
       ) : (
-        <div className="mountains-container">
+        <div className="w-2/3 flex flex-wrap justify-center">
           {mountains.length > 0 ? (
             mountains.map((mountain) => (
               <MountainCard

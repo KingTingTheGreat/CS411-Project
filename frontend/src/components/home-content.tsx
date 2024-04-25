@@ -12,9 +12,9 @@ const HomeContent = () => {
 
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="w-3/5 bg-gray-500 p-2 m-2 rounded-lg">
+      <div className="w-2/3 bg-gray-500 p-1 m-2 rounded-lg">
         <h3 className="text-6xl text-center m-2">Popular mountains</h3>
-        <div className="flex flex-wrap p-2">
+        <div className="flex flex-wrap">
           {topMountains.map((mountainId) => (
             <MountainCardId
               key={mountainId}
