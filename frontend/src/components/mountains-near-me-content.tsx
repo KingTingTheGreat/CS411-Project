@@ -2,13 +2,16 @@ import React, { useEffect, useState } from 'react';
 import './styles/styles.css';
 import MountainCard from './mountain-card';
 import { Mountain, ResortApiData } from '../types';
+import GetProfile from "../hooks/getProfile";
 
 const MountainsNearMeContent: React.FC = () => {
   // Add useEffect to track when the component mounts
   useEffect(() => {
     console.log('MountainsNearMeContent mounted');
   }, []);
-
+  
+  const [user, setUser] = useState(GetProfile());
+  if (!user) setUser({favorites: []})
   const [loading, setLoading] = useState(false);
   const [address, setAddress] = useState<string>('');
   const [radius, setRadius] = useState<number>(50); // Default radius in kilometers
@@ -119,7 +122,7 @@ const MountainsNearMeContent: React.FC = () => {
       ) : (
         <div className="mountains-container">
           {mountains.length > 0 ? mountains.map(mountain => (
-            <MountainCard key={mountain.name} mountain={mountain} />
+            <MountainCard key={mountain.name} mountain={mountain} favorites={user.favorites} />
           )) : (
             <p>No mountains found.</p>
           )}

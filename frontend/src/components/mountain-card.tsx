@@ -4,9 +4,9 @@ import './styles/MountainCard.css';
 import MountainDetailsModal from './mountain-details-modal';
 import { Mountain } from "../types"
 
-const MountainCard = ({ mountain }: {mountain: Mountain}) => {
+const MountainCard = ({ mountain, favorites }: {mountain: Mountain, favorites: string[]}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(favorites.includes(mountain.id));
   const token = localStorage.getItem("411ProjectToken")
 
   // console.log(mountain)
