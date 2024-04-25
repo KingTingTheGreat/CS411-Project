@@ -3,6 +3,7 @@ package main
 import (
 	"backend/configs"
 	"backend/controllers"
+	"backend/shared"
 	"backend/utils"
 
 	"github.com/gorilla/sessions"
@@ -31,6 +32,8 @@ func main() {
 	goth.UseProviders(
 		google.New(configs.EnvGoogleClientId(), configs.EnvGoogleClientSecret(), "http://localhost:6969/auth/google/callback"),
 	)
+
+	shared.InitResorts()
 
 	e := echo.New()
 	e.Use(middleware.Logger())
