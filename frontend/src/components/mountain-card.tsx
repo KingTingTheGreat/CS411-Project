@@ -64,7 +64,7 @@ const MountainCard = ({ mountain }: {mountain: Mountain}) => {
           className="favorite-star"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
-          fill={isFavorite ? 'yellow' : 'none'}
+          fill={isFavorite ? 'gold' : 'none'}
           stroke="black"
           strokeWidth="2"
         >

@@ -14,6 +14,22 @@ const MountainsNearMeContent: React.FC = () => {
   const [radius, setRadius] = useState<number>(50); // Default radius in kilometers
   const [mountains, setMountains] = useState<Mountain[]>([]);
 
+  const sortMountains = (mountains: ResortApiData[]) => {
+    return mountains.sort((a, b) => {
+      const openPercentageA = a.lifts.stats.percentage.open;
+      const openPercentageB = b.lifts.stats.percentage.open;
+
+      if (openPercentageA === openPercentageB) {
+        if (openPercentageA === 0) { // Check if both are zero and then compare scheduled
+          return b.lifts.stats.percentage.scheduled - a.lifts.stats.percentage.scheduled;
+        }
+        return b.conditions.base - a.conditions.base; // Compare snow base if percentages are equal
+      }
+      return openPercentageB - openPercentageA; // Primary sorting by open percentage
+    });
+  };
+
+
   // Track state changes
   useEffect(() => {
     // console.log('Loading state changed:', loading);
@@ -53,8 +69,9 @@ const MountainsNearMeContent: React.FC = () => {
           conditions: resort.conditions,
           weather: resort.weather
         }));
-        // console.log('Setting mountains:', processedData);
-        setMountains(processedData);
+        const sortedMountains = sortMountains(processedData); // Sort the data here
+        console.log('Setting mountains:', sortedMountains);
+        setMountains(sortedMountains);
       })
       .catch(error => {
         console.error('Error fetching mountains:', error);
@@ -91,10 +108,10 @@ const MountainsNearMeContent: React.FC = () => {
         style={{ color: 'black' }} // Ensure text is visible
       />
       <select value={radius} onChange={handleRadiusChange} style={{ color: 'black' }}>
-        <option value="50">50 kilometers</option>
-        <option value="100">100 kilometers</option>
-        <option value="200">200 kilometers</option>
-        <option value="300">300 kilometers</option>
+        <option value="50">50 km</option>
+        <option value="100">100 km</option>
+        <option value="200">200 km</option>
+        <option value="300">300 km</option>
       </select>
       <button className="search-button" onClick={searchMountains}>Search</button>
       {loading ? (
