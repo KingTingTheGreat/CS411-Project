@@ -60,9 +60,9 @@ func main() {
 	e.POST("/profile", controllers.GetProfile)
 
 	e.GET("/resorts", controllers.GetResorts)
+	e.GET("/resort-by-id", controllers.GetResortById)
 
 	e.GET("/getCoordinates", controllers.GetCoordinates)
 
 	e.Logger.Fatal(e.Start(":6969"))
 }
-
