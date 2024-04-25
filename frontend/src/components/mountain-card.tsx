@@ -11,7 +11,10 @@ const MountainCard = ({
   favorites: string[];
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isFavorite, setIsFavorite] = useState(favorites.includes(mountain.id));
+  console.log(favorites);
+  const [isFavorite, setIsFavorite] = useState(
+    favorites.includes(mountain.id) || favorites.includes(mountain.slug)
+  );
   const token = localStorage.getItem("411ProjectToken");
 
   // console.log(mountain)
@@ -28,7 +31,7 @@ const MountainCard = ({
 
   const toggleFavorite = (event: React.MouseEvent) => {
     console.log("toggling favorite");
-    console.log(mountain.id);
+    console.log(mountain.id ?? mountain.slug);
     event.stopPropagation();
     setIsFavorite(!isFavorite);
   };
@@ -36,7 +39,7 @@ const MountainCard = ({
   const toggleDB = () => {
     console.log("updating db");
     const formData = new FormData();
-    formData.append("id", mountain.id);
+    formData.append("id", mountain.id ?? mountain.slug);
     formData.append("status", isFavorite ? "false" : "true");
     fetch("http://localhost:6969/favorite-status", {
       method: "PUT",
@@ -91,7 +94,15 @@ const MountainCard = ({
         </svg>
       </div>
       {isModalOpen && (
-        <MountainDetailsModal resort={mountain} onClose={toggleModal} />
+        <MountainDetailsModal
+          resort={mountain}
+          onClose={toggleModal}
+          isFavorite={isFavorite}
+          favoriteClick={(e) => {
+            toggleFavorite(e);
+            toggleDB();
+          }}
+        />
       )}
     </>
   );

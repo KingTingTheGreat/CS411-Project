@@ -1,5 +1,5 @@
 import GetProfile from "../hooks/getProfile";
-// import MountainCard from "./mountain-card"
+import MountainCardId from "./mountain-card-id";
 
 const Profile = () => {
   const profile = GetProfile();
@@ -18,7 +18,11 @@ const Profile = () => {
       <div>
         {profile.favorites ? (
           profile.favorites.map((mountain: string, i: number) => (
-            <p key={i}>{mountain}</p>
+            <MountainCardId
+              key={i}
+              id={mountain}
+              favorites={profile.favorites}
+            />
           ))
         ) : (
           <div>no favorites</div>
@@ -28,5 +32,4 @@ const Profile = () => {
   );
 };
 
-// {profile.favorites ? profile.favorites.map((mountain:string, i:number) => <MountainCard key={i} mountain={mountain} />) : <div>No favorites</div>}
 export default Profile;

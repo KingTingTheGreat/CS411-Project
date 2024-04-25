@@ -6,6 +6,8 @@ import MountainMap from "./mountain-map";
 interface MountainDetailsModalProps {
   resort: Mountain;
   onClose: () => void;
+  isFavorite: boolean;
+  favoriteClick: (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => void;
 }
 
 interface VisibleForecast {
@@ -15,17 +17,13 @@ interface VisibleForecast {
 const MountainDetailsModal: React.FC<MountainDetailsModalProps> = ({
   resort,
   onClose,
+  isFavorite,
+  favoriteClick,
 }) => {
   const [showLifts, setShowLifts] = useState(false);
   const [showConditions, setShowConditions] = useState(false);
   const [showWeather, setShowWeather] = useState(false);
   const [visibleForecast, setVisibleForecast] = useState<VisibleForecast>({});
-  const [isFavorite, setIsFavorite] = useState(false);
-
-  const toggleFavorite = (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
-    e.stopPropagation(); // Prevent modal from closing when clicking the star
-    setIsFavorite(!isFavorite);
-  };
 
   const toggleLifts = () => setShowLifts(!showLifts);
   const toggleConditions = () => setShowConditions(!showConditions);
@@ -63,7 +61,7 @@ const MountainDetailsModal: React.FC<MountainDetailsModalProps> = ({
                 {resort.name}
               </a>
               <svg
-                onClick={toggleFavorite}
+                onClick={favoriteClick}
                 className="favorite-star-detail"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
